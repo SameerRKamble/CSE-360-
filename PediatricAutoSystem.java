@@ -5,16 +5,16 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.*;
 
-public class HeartHealthApp extends Application {
+public class PediatircAutoSystem extends Application {
 	
-	private PatientIntake PatientIntake;
-    private CTScanTechView CTScanTechView;
+    private NurseView NurseView;
+    private DoctorView DoctorView;
     private PatientView PatientView;
 	
 	// UI Components
 	//main
-    private Button btnpatientIntake;
-    private Button btnctScanTechView;
+    private Button btnNurseView;
+    private Button btnDoctorView;
     private Button btnpatientView;
     private Label MainTitle;
     private Scene mainScene; 
@@ -24,28 +24,28 @@ public class HeartHealthApp extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		//Main UI
-		MainTitle = new Label("Welcome to Heart Health Imaging and Recording System");
-		btnpatientIntake = new Button("Patient Intake");
-		btnctScanTechView = new Button("CT Scan Tech View");
+		MainTitle = new Label("Welcome to Pediatric Doctor’s Office Automation System");
+		btnNurseView = new Button("Nurse View");
+		btnDoctorView = new Button("Doctor View");
 		btnpatientView = new Button("Patient View");
         
 		//set button size
-		btnpatientIntake.setPrefWidth(200);
-		btnpatientIntake.setPrefHeight(80);
-		btnctScanTechView.setPrefWidth(200);
-		btnctScanTechView.setPrefHeight(80);
+		btnNurseView.setPrefWidth(200);
+		btnNurseView.setPrefHeight(80);
+		btnDoctorView.setPrefWidth(200);
+		btnDoctorView.setPrefHeight(80);
 		btnpatientView.setPrefWidth(200);
 		btnpatientView.setPrefHeight(80);
 		
 		//set button color
-		btnpatientIntake.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-		btnctScanTechView.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		btnNurseView.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		btnDoctorView.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 		btnpatientView.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 		// Attach event handlers to buttons
-		btnpatientIntake.setOnAction(event -> openPatientIntake(primaryStage));
-		btnctScanTechView.setOnAction(event -> openTechnicianView(primaryStage));
+		btnNurseView.setOnAction(event -> openNurseView(primaryStage));
+		btnDoctorView.setOnAction(event -> openDoctorView(primaryStage));
 		btnpatientView.setOnAction(event -> openPatientView(primaryStage));
-		VBox buttonSection = new VBox(20, btnpatientIntake, btnctScanTechView, btnpatientView);
+		VBox buttonSection = new VBox(20, btnNurseView, btnDoctorView, btnpatientView);
 		buttonSection.setAlignment(Pos.CENTER);
 		MainTitle.setAlignment(Pos.CENTER);
 		
@@ -60,16 +60,16 @@ public class HeartHealthApp extends Application {
         primaryStage.show();
 	}
 	
-	private void openPatientIntake(Stage stage) {
-		PatientIntake PatientIntake = new PatientIntake(this);
-        Scene scene = new Scene(PatientIntake.getRoot(), 800, 600);
+	private void openNurseView(Stage stage) {
+		NurseView NurseView = new NurseView(this);
+        Scene scene = new Scene(NurseView.getRoot(), 800, 600);
         stage.setScene(scene);
 		stage.show();
     }
 
-    private void openTechnicianView(Stage stage) {
-    	 CTScanTechView ctScanTechView = new CTScanTechView(this);
-		 Scene scene = new Scene(ctScanTechView.getRoot(), 700, 500);
+    private void openDoctorView(Stage stage) {
+    	DoctorView DoctorView = new DoctorView(this);
+		 Scene scene = new Scene(DoctorView.getRoot(), 700, 500);
 		 stage.setScene(scene);
 		 stage.show();
     }
