@@ -46,9 +46,9 @@ public class HealthSystem extends Application {
         patientViewButton = new Button("Patient View");
 
         // Styling the Buttons
-        patientIntakeButton.setStyle("-fx-background-color: blue; -fx-min-width: 200px;-fx-font-weight: bold; -fx-padding: 10px;");
-        ctScanTechViewButton.setStyle("-fx-background-color: blue; -fx-min-width: 200px; -fx-font-weight: bold; -fx-padding: 10px;");
-        patientViewButton.setStyle("-fx-background-color: blue; -fx-min-width: 200px; -fx-font-weight: bold; -fx-padding: 10px;");        
+        patientIntakeButton.setStyle("-fx-background-color: #4c6fb5; -fx-min-width: 200px;-fx-font-weight: bold; -fx-padding: 10px;");
+        ctScanTechViewButton.setStyle("-fx-background-color: #4c6fb5; -fx-min-width: 200px; -fx-font-weight: bold; -fx-padding: 10px;");
+        patientViewButton.setStyle("-fx-background-color: #4c6fb5; -fx-min-width: 200px; -fx-font-weight: bold; -fx-padding: 10px;");        
 
         // Adding elements to the VBox
         buttonVbox.getChildren().addAll(patientIntakeButton, ctScanTechViewButton, patientViewButton);
@@ -89,8 +89,7 @@ public class HealthSystem extends Application {
                 patientView.show(); // Show the patient view based on the entered patient ID
             });
         });
-        //here!
-    
+        
         // Create the scene
         // dvusdvhusdhvbhsdv
         Scene scene = new Scene(root, 800, 600);
