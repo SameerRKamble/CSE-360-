@@ -25,8 +25,8 @@ public class HeartHealthApp extends Application {
 		this.primaryStage = primaryStage;
 		//Main UI
 		MainTitle = new Label("Welcome to Heart Health Imaging and Recording System");
-		btnpatientIntake = new Button("Patient Intake");
-		btnctScanTechView = new Button("CT Scan Tech View");
+		btnpatientIntake = new Button("Nurse View");
+		btnctScanTechView = new Button("Doctor View");
 		btnpatientView = new Button("Patient View");
         
 		//set button size
