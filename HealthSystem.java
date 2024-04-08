@@ -91,6 +91,7 @@ public class HealthSystem extends Application {
         });
 
         // Create the scene
+        // dvusdvhusdhvbhsdv
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene); // Set the scene to the primary stage
         primaryStage.show(); // Show the primary stage
