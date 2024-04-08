@@ -89,7 +89,8 @@ public class HealthSystem extends Application {
                 patientView.show(); // Show the patient view based on the entered patient ID
             });
         });
-
+        //here!
+    
         // Create the scene
         // dvusdvhusdhvbhsdv
         Scene scene = new Scene(root, 800, 600);
