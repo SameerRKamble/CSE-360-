@@ -16,22 +16,20 @@ public class NurseView{
 	private Label LlastName;
 	private Label LEmail;
 	private Label LPhoneNumber;
-	private Label LHealthHistory;
 	private Label LInsuranceID;
 	private Label PatientIntake;
 	private TextArea TxFirstName;
 	private TextArea TxlastName;
 	private TextArea TxEmail;
 	private TextArea TxPhoneNumber;
-	private TextArea TxHealthHistory;
 	private TextArea TxInsuranceID;
 	private Button btnSave;
 	
 	//layout
 	private GridPane IntakegridPane;
-	private HeartHealthApp mainApp;
+	private PediatircAutoSystem mainApp;
 	 
-	public PatientIntake(HeartHealthApp mainApp) {
+	public NurseView(PediatircAutoSystem mainApp) {
 		this.mainApp = mainApp;
         initializeUI();
     }
@@ -43,7 +41,6 @@ public class NurseView{
 		LlastName = new Label("Last Name:");
 		LEmail = new Label("Email:");
 		LPhoneNumber = new Label("Phone Number:");
-		LHealthHistory = new Label("Health History:");
 		LInsuranceID = new Label("Insurance ID:");
 		PatientIntake = new Label("Patient Intake Form");
 		
@@ -52,7 +49,6 @@ public class NurseView{
         TxlastName = new TextArea();
         TxEmail = new TextArea();
         TxPhoneNumber = new TextArea();
-        TxHealthHistory = new TextArea();
         TxInsuranceID = new TextArea();
         TxFirstName.setPrefWidth(400);
         TxFirstName.setPrefHeight(50);
@@ -62,8 +58,6 @@ public class NurseView{
         TxEmail.setPrefHeight(50);
         TxPhoneNumber.setPrefWidth(400);
         TxPhoneNumber.setPrefHeight(50);
-        TxHealthHistory.setPrefWidth(400);
-        TxHealthHistory.setPrefHeight(50);
         TxInsuranceID.setPrefWidth(400);
         TxInsuranceID.setPrefHeight(50);
        
@@ -85,14 +79,12 @@ public class NurseView{
         IntakegridPane.add(LlastName, 0, 2);
         IntakegridPane.add(LEmail, 0, 3);
         IntakegridPane.add(LPhoneNumber, 0, 4);
-        IntakegridPane.add(LHealthHistory, 0, 5);
-        IntakegridPane.add(LInsuranceID, 0, 6);
+        IntakegridPane.add(LInsuranceID, 0, 5);
         IntakegridPane.add(TxFirstName, 1, 1);
         IntakegridPane.add(TxlastName, 1, 2);
         IntakegridPane.add(TxEmail, 1, 3);
         IntakegridPane.add(TxPhoneNumber, 1, 4);
-        IntakegridPane.add(TxHealthHistory, 1, 5);
-        IntakegridPane.add(TxInsuranceID, 1, 6);
+        IntakegridPane.add(TxInsuranceID, 1, 5);
         IntakegridPane.add(btnSave, 2, 7);
         
         Button goBackButton = new Button("Go Back");
@@ -114,7 +106,6 @@ public class NurseView{
         String lastName = TxlastName.getText();
         String email = TxEmail.getText();
         String phoneNumber = TxPhoneNumber.getText();
-        String healthHistory = TxHealthHistory.getText();
         String insuranceID = TxInsuranceID.getText();
         
         //Generate Patient's unique ID
@@ -127,7 +118,6 @@ public class NurseView{
             writer.write("Last Name: " + lastName + "\n");
             writer.write("Email: " + email + "\n");
             writer.write("Phone Number: " + phoneNumber + "\n");
-            writer.write("Health History: " + healthHistory + "\n");
             writer.write("Insurance ID: " + insuranceID + "\n");
             writer.close();
         	} 
