@@ -5,10 +5,10 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.*;
 
-public class HeartHealthApp extends Application {
+public class PediatircAutoSystem extends Application {
 	
-	private PatientIntake PatientIntake;
-    private CTScanTechView CTScanTechView;
+	private NurseView NurseView;
+    private DoctorView DoctorView;
     private PatientView PatientView;
 	
 	// UI Components
