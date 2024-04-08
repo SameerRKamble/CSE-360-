@@ -24,7 +24,7 @@ public class PediatircAutoSystem extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		//Main UI
-		MainTitle = new Label("Welcome to Heart Health Imaging and Recording System");
+		MainTitle = new Label("Welcome to Pediatric Doctor’s Office Automation System");
 		btnNurseView = new Button("Nurse View");
 		btnDoctorView = new Button("Doctor View");
 		btnpatientView = new Button("Patient View");
