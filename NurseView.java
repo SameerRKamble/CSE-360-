@@ -9,7 +9,7 @@ import java.util.*;
 
 import javafx.geometry.*;
 
-public class PatientIntake{
+public class NurseView{
 	
 	//patientIntake
 	private Label LfirstName;
