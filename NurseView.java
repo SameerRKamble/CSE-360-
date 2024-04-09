@@ -96,6 +96,10 @@ public class NurseView{
 	    //
 	    
     }
+
+	private void openPastHistory(){
+	
+	}
 	
 	private void initializeUI()
 	{
