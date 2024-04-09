@@ -37,9 +37,17 @@ public class NurseView{
     private Label LKnownAllergies;
     private Label LHealthConcern;
     private Label LPastHistory;
+    private Label LWeight;
+    private Label LHeight;
+    private Label LTemperature;
+    private Label LBloodPressure;
     private TextArea TxKnownAllergies;
     private TextArea TxHealthConcern;
     private TextArea TxPastHistory;
+    private TextArea TxWeight;
+    private TextArea TxHeight;
+    private TextArea TxTemperature;
+    private TextArea TxBloodPressure;
     
 	//layout
 	private GridPane IntakegridPane;
@@ -76,7 +84,14 @@ public class NurseView{
 	    TxKnownAllergies = new TextArea();
 	    TxHealthConcern = new TextArea();
 	    TxPastHistory = new TextArea();
-	    
+	    LWeight = new Label("Weight:");
+	    LHeight = new Label("Height:");
+	    LTemperature = new Label("Body Temperature:");
+	    LBloodPressure = new Label("Blood Pressure:");
+	    TxWeight = new TextArea();
+	    TxHeight = new TextArea();
+	    TxTemperature = new TextArea();
+	    TxBloodPressure = new TextArea();
 	    
 	    //
 	    
