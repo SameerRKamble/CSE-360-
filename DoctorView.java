@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import javafx.geometry.*;
 
-public class CTScanTechView{
+public class DoctorView{
 	
 	//CTScanView
     private Label docNote;
