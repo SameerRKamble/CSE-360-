@@ -7,213 +7,138 @@ import javafx.stage.Stage;
 import java.io.*;
 import javafx.geometry.*;
 
-public class DoctorView{
-	
-	//CTScanView
-<<<<<<< HEAD
+public class DoctorView {
+
     private Label docNote;
     private Label meds;
     private TextArea docNoteText;
     private TextArea medstext;
     private Button save;
     private Button sendMeds;
+    private Button viewHistory;
+    private HBox mainContent; // Use HBox for main content layout
+    private VBox mainLayout;
 
-    VBox mainLayout;
-    
-    //layout
-=======
-    private Label CTLbPatientID;
-    private Label CTLbtotalCAC;
-    private Label CTLbCAC;
-    private Label CTLbLM;
-    private Label CTLbLAD;
-    private Label CTLbLCX;
-    private Label CTLbRCA;
-    private Label CTLbPDA;
-    private TextArea CTpatientId;
-    private TextArea CTtotalcacScore;
-    private TextArea CTLM;
-    private TextArea CTLAD;
-    private TextArea CTLCX ;
-    private TextArea CTRCA;
-    private TextArea CTPDA;
-    private Button CTbtnSave;
-    
-    //CTlayout
-    private VBox CTRecord;
->>>>>>> 7b8446d031b580f32831c7ef957429f54431eab5
-    private HeartHealthApp mainApp;
-    
-    public CTScanTechView(HeartHealthApp mainApp) {
-    	this.mainApp = mainApp;
+    boolean isHistory = false;
+    private PediatircAutoSystem mainApp;
+
+    public DoctorView(PediatircAutoSystem mainApp) {
+        this.mainApp = mainApp;
         initializeUI();
     }
-    
-    private void initializeUI()
-    {
-		//Label
-<<<<<<< HEAD
-		docNote = new Label("Doctor Notes:");
-		meds = new Label("Prescription:");
-	
-		//Text Area
-		docNoteText = new TextArea();
+
+    private void initializeUI() {
+        // Labels
+        docNote = new Label("Doctor Notes:");
+        meds = new Label("Prescription:");
+
+        // Text Areas
+        docNoteText = new TextArea();
         medstext = new TextArea();
 
         docNoteText.setPrefWidth(400);
-        docNoteText.setPrefHeight(50);
+        docNoteText.setPrefHeight(400);
         medstext.setPrefWidth(400);
-        medstext.setPrefHeight(50);
+        medstext.setPrefHeight(400);
 
-        
-        //Button
+        // Buttons
         save = new Button("Save");
         save.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
         save.setPrefWidth(100);
-		save.setPrefHeight(50);
-        // Attach event handlers to buttons
-        save.setOnAction(e -> doctorNotes(docNoteText.getText(),medstext.getText()));
+        save.setPrefHeight(50);
+        save.setOnAction(e -> saveDoctorNotes(docNoteText.getText()));
 
+        sendMeds = new Button("Send Meds");
+        sendMeds.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+        sendMeds.setPrefWidth(100);
+        sendMeds.setPrefHeight(50);
+        sendMeds.setOnAction(e -> saveMedication(medstext.getText()));
 
-        // Layout
-        HBox doctorNotesBox = new HBox(docNote, docNoteText);
-        HBox.setHgrow(docNoteText, Priority.ALWAYS); // Allow text area to grow horizontally
-        
-        HBox medicationsBox = new HBox(meds, medstext);
-        HBox.setHgrow(medstext, Priority.ALWAYS);
-        
-        mainLayout = new VBox(doctorNotesBox, medicationsBox, save);
-        mainLayout.setSpacing(10); // Add spacing between elements
-        mainLayout.setPrefSize(500, 200); // Set preferred size for the VBox
-        
+        // Doctor Notes VBox
+        VBox doctorNotesVBox = new VBox(docNote, docNoteText);
+        doctorNotesVBox.setSpacing(10);
+
+        // Medications VBox
+        VBox medicationsVBox = new VBox(meds, medstext);
+        medicationsVBox.setSpacing(10);
+
+        // Main HBox for content
+        mainContent = new HBox(doctorNotesVBox, medicationsVBox);
+        mainContent.setSpacing(20);
+
+        // Bottom Buttons HBox
+        HBox bottomBox = new HBox();
+        bottomBox.setSpacing(50);
+        //bottomBox.getChildren().addAll();
+
+        // Go Back Button
         Button goBackButton = new Button("Go Back");
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
-        mainLayout.getChildren().add(goBackButton);
-=======
-		CTLbPatientID = new Label("Patient ID:");
-		CTLbtotalCAC = new Label("The total Agatston CAC score");
-		CTLbCAC = new Label("Vessel level Agatston CAC score");
-		CTLbLM = new Label("LM:");
-		CTLbLAD = new Label("LAD:");
-		CTLbLCX = new Label("LCX:");
-		CTLbRCA = new Label("RCA:");
-		CTLbPDA = new Label("PDA:");
-	
-		//Text Area
-		CTpatientId = new TextArea();
-        CTtotalcacScore = new TextArea();
-        CTpatientId.setPrefWidth(400);
-        CTpatientId.setPrefHeight(50);
-        CTtotalcacScore.setPrefWidth(400);
-        CTtotalcacScore.setPrefHeight(50);
-        CTLM = new TextArea();
-        CTLAD = new TextArea();
-        CTLCX = new TextArea();
-        CTRCA = new TextArea();
-        CTPDA = new TextArea();
-        CTLM.setPrefWidth(250);
-        CTLM.setPrefHeight(50);
-        CTLAD.setPrefWidth(250);
-        CTLAD.setPrefHeight(50);
-        CTLCX.setPrefWidth(250);
-        CTLCX.setPrefHeight(50);
-        CTRCA.setPrefWidth(250);
-        CTRCA.setPrefHeight(50);
-        CTPDA.setPrefWidth(250);
-        CTPDA.setPrefHeight(50);
-        
-        //Button
-        CTbtnSave = new Button("Save");
-        CTbtnSave.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-        CTbtnSave.setPrefWidth(100);
-		CTbtnSave.setPrefHeight(50);
-        // Attach event handlers to buttons
-        CTbtnSave.setOnAction(event -> saveCTRecord());
-        
-        //Layout
-        GridPane CTRecordgridPane = new GridPane();
-        CTRecordgridPane.setHgap(20);
-        CTRecordgridPane.setVgap(15);
-        CTRecordgridPane.setPadding(new Insets(10));
-        CTRecordgridPane.add(CTLbPatientID, 0, 0);
-        CTRecordgridPane.add(CTLbtotalCAC, 0, 1);
-        CTRecordgridPane.add(CTLbCAC, 0, 2);
-        CTRecordgridPane.add(CTpatientId, 1, 0);
-        CTRecordgridPane.add(CTtotalcacScore, 1, 1);
-        GridPane CTRecordCACgridPane = new GridPane();
-        CTRecordCACgridPane.setHgap(20);
-        CTRecordCACgridPane.setVgap(15);
-        CTRecordCACgridPane.setPadding(new Insets(10));
-        CTRecordCACgridPane.add(CTLbLM, 0, 0);
-        CTRecordCACgridPane.add(CTLbLAD, 0, 1);
-        CTRecordCACgridPane.add(CTLbLCX, 0, 2);
-        CTRecordCACgridPane.add(CTLbRCA, 0, 3);
-        CTRecordCACgridPane.add(CTLbPDA, 0, 4);
-        CTRecordCACgridPane.add(CTLM, 1, 0);
-        CTRecordCACgridPane.add(CTLAD, 1, 1);
-        CTRecordCACgridPane.add(CTLCX, 1, 2);
-        CTRecordCACgridPane.add(CTRCA, 1, 3);
-        CTRecordCACgridPane.add(CTPDA, 1, 4);
-        CTRecordCACgridPane.add(CTbtnSave, 10, 4);
-        CTRecord = new VBox(CTRecordgridPane,CTRecordCACgridPane);
-        
-        Button goBackButton = new Button("Go Back");
-        goBackButton.setOnAction(e -> mainApp.showMainMenu());
-        CTRecordCACgridPane.add(goBackButton, 1, 5);
->>>>>>> 7b8446d031b580f32831c7ef957429f54431eab5
-        
+        bottomBox.getChildren().addAll( save, sendMeds,goBackButton);
+
+        // History Button
+        viewHistory = new Button("View History");
+        viewHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+        viewHistory.setPrefWidth(100);
+        viewHistory.setPrefHeight(50);
+        if (!isHistory) {
+            viewHistory.setOnAction(e -> openHistory());
+        } else {
+            viewHistory.setDisable(true);
+        }
+        bottomBox.getChildren().add(viewHistory);
+
+        // Main VBox for layout
+        mainLayout = new VBox();
+        mainLayout.getChildren().addAll(mainContent, bottomBox);
+        mainLayout.setPadding(new Insets(10));
     }
- 
-    //get root for the main button to use
+
+    // Get root for the main button to use
     public VBox getRoot() {
-<<<<<<< HEAD
         return mainLayout;
     }
-	
-	private void doctorNotes(String notes, String medication) {
 
-        String fileName ="Medications.txt";
-        
-        //if they are all filled, create the file
+    private void saveDoctorNotes(String notes) {
+        String fileName = "Notes.txt";
         try {
-            FileWriter writer = new FileWriter(fileName);
+            FileWriter writer = new FileWriter(fileName, true); // Set true for append mode
             writer.write("Notes: " + notes + "\n");
-            writer.write("medication: " + medication + "\n");
-=======
-        return CTRecord;
-    }
-	
-	private void saveCTRecord() {
-		//get CTScan record
-		String patientID = CTpatientId.getText();
-        String totalScore = CTtotalcacScore.getText();
-        String lmScore = CTLM.getText();
-        String ladScore = CTLAD.getText();
-        String lcxScore = CTLCX.getText();
-        String rcaScore = CTRCA.getText();
-        String pdaScore = CTPDA.getText();
-		
-        //check if every blank has been filled
-        if (patientID.isEmpty() || totalScore.isEmpty() || lmScore.isEmpty() || ladScore.isEmpty() ||
-                lcxScore.isEmpty() || rcaScore.isEmpty() || pdaScore.isEmpty()) {
-            return;
-        }
-        
-        //if they are all filled, create the file
-        try {
-            FileWriter writer = new FileWriter(patientID + "CTResults.txt");
-            writer.write("Patient ID: " + patientID + "\n");
-            writer.write("Total Agatston CAC Score: " + totalScore + "\n");
-            writer.write("LM: " + lmScore + "\n");
-            writer.write("LAD: " + ladScore + "\n");
-            writer.write("LCX: " + lcxScore + "\n");
-            writer.write("RCA: " + rcaScore + "\n");
-            writer.write("PDA: " + pdaScore + "\n");
->>>>>>> 7b8446d031b580f32831c7ef957429f54431eab5
             writer.close();
+            showAlert("Saved", "Doctor notes saved successfully.");
         } catch (IOException e) {
+            showAlert("Error", "An error occurred while saving doctor notes.");
             e.printStackTrace();
         }
-	}
-    
+    }
+
+    private void saveMedication(String medication) {
+        String fileName = "Medication.txt";
+        try {
+            FileWriter writer = new FileWriter(fileName, true); // Set true for append mode
+            writer.write("Medication: " + medication + "\n");
+            writer.close();
+            showAlert("Saved", "Prescription saved successfully.");
+        } catch (IOException e) {
+            showAlert("Error", "An error occurred while saving the prescription.");
+            e.printStackTrace();
+        }
+    }
+
+    private void openHistory() {
+        // Dummy implementation for history retrieval
+        // The actual implementation will depend on how history data is stored and should be retrieved
+        String historyData = "Patient history data...";
+        showAlert("History", historyData);
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    // Main method and the rest of the application logic would be here
 }
