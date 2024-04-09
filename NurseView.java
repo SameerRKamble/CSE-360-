@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -27,13 +28,58 @@ public class NurseView{
 	private TextArea TxInsuranceID;
 	private Button btnSave;
 	
+	private TextField patientIdInput;  // TextField for patient ID input
+    private Button submitButton;       // Button to submit patient ID
+    private VBox inputLayout; 
+    private VBox NurseView;
+	
+    //health concern layout
+    private Label LKnownAllergies;
+    private Label LHealthConcern;
+    private Label LPastHistory;
+    private TextArea TxKnownAllergies;
+    private TextArea TxHealthConcern;
+    private TextArea TxPastHistory;
+    
 	//layout
 	private GridPane IntakegridPane;
 	private PediatircAutoSystem mainApp;
 	 
 	public NurseView(PediatircAutoSystem mainApp) {
 		this.mainApp = mainApp;
+		initializeInputUI(); //check ID first
         initializeUI();
+        initializeHealthUI();
+    }
+	//check id first
+	private void initializeInputUI() {
+        // Patient ID input section   
+        patientIdInput = new TextField();
+        patientIdInput.setPromptText("Enter Patient ID");
+        
+        submitButton = new Button("Load Patient Data");
+        submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
+
+        inputLayout = new VBox(20);
+        inputLayout.setAlignment(Pos.CENTER);
+        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton);
+        NurseView = inputLayout;
+    }
+	
+	//health concern part
+	private void initializeHealthUI() {
+        
+		//UI components
+		LKnownAllergies = new Label("Known Allergies:");
+		LHealthConcern = new Label("Health Concern");
+		LPastHistory = new Label("Past History");
+	    TxKnownAllergies = new TextArea();
+	    TxHealthConcern = new TextArea();
+	    TxPastHistory = new TextArea();
+	    
+	    
+	    //
+	    
     }
 	
 	private void initializeUI()
@@ -139,6 +185,32 @@ public class NurseView{
         
         
      }
+	
+    private void loadPatientData(String patientID) {
+        
+    	// Validate patient ID and load data
+        if (patientID == null) {
+            showAlert("No patient ID input.");
+            return;
+        }
+        //if the id cannot found or not register
+        if (!patientID.matches("\\d{5}")) {
+            showAlert("Haven't registered yet.");
+            initializeUI();
+        }
+        
+    	
+        
+    }
+    
+    // Utility method to show an alert dialog
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 	
 	private String generatePatientID() {
         String patientID;
