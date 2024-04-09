@@ -1,0 +1,166 @@
+package main;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+public class Nurse extends Application {
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	public void start(Stage primaryStage) {
+		primaryStage.setTitle("Nurse View");	
+		primaryStage.setResizable(false);
+		
+		VBox mainPane = new VBox(10);
+		HBox organizer1 = new HBox(10);
+		organizer1.setStyle("-fx-alignment: center;");
+		VBox leftBox = new VBox(10);
+		VBox rightBox = new VBox(10);
+		
+        mainPane.setStyle("-fx-alignment: center-left;");
+		Label title = new Label("Patient Intake Form");
+		Label firstName = new Label("First Name");
+		Label lastName = new Label("Last Name");
+		Label email = new Label("Email");
+		Label phone = new Label("Phone Number");
+		Label history = new Label("Health History");
+		Label insurance = new Label("Insurance ID");
+		Label height = new Label("Height");
+		Label weight = new Label("Weight");
+		Label temperature = new Label("Temperature");
+		Label pulse = new Label("Pulse");
+		Label respiration = new Label("Respiration Rate");
+		Label bloodPressure = new Label("Blood Pressure");
+		TextField firstInput = new TextField();
+		TextField lastInput = new TextField();
+		TextField emailInput = new TextField();
+		TextField phoneInput = new TextField();
+		TextField historyInput = new TextField();
+		TextField insuranceInput = new TextField();
+		TextField heightInput = new TextField();
+		TextField weightInput = new TextField();
+		TextField temperatureInput = new TextField();
+		TextField pulseInput = new TextField();
+		TextField respirationInput = new TextField();
+		TextField pressureInput = new TextField();
+		Button submitButton = new Button("Submit");
+
+		HBox titleBox = new HBox(10);
+		titleBox.setStyle("-fx-alignment: center;");
+		title.setFont(Font.font ("arial", 24));
+		titleBox.getChildren().add(title);
+		
+		HBox firstBox = new HBox(10);
+		firstBox.setStyle("-fx-alignment: center-right;");
+		firstBox.getChildren().add(firstName);
+		firstBox.getChildren().add(firstInput);
+
+		HBox lastBox = new HBox(10);
+		lastBox.setStyle("-fx-alignment: center-right;");
+		lastBox.getChildren().add(lastName);
+		lastBox.getChildren().add(lastInput);
+		
+		HBox emailBox = new HBox(10);
+		emailBox.setStyle("-fx-alignment: center-right;");
+		emailBox.getChildren().add(email);
+		emailBox.getChildren().add(emailInput);
+		
+		HBox phoneBox = new HBox(10);
+		phoneBox.setStyle("-fx-alignment: center-right;");
+		phoneBox.getChildren().add(phone);
+		phoneBox.getChildren().add(phoneInput);
+		
+		HBox historyBox = new HBox(10);
+		historyBox.setStyle("-fx-alignment: center-right;");
+		historyBox.getChildren().add(history);
+		historyBox.getChildren().add(historyInput);
+		
+		HBox insuranceBox = new HBox(10);
+		insuranceBox.setStyle("-fx-alignment: center-right;");
+		insuranceBox.getChildren().add(insurance);
+		insuranceBox.getChildren().add(insuranceInput);
+		
+		HBox heightBox = new HBox(10);
+		heightBox.setStyle("-fx-alignment: center-right;");
+		heightBox.getChildren().add(height);
+		heightBox.getChildren().add(heightInput);
+		
+		HBox weightBox = new HBox(10);
+		weightBox.setStyle("-fx-alignment: center-right;");
+		weightBox.getChildren().add(weight);
+		weightBox.getChildren().add(weightInput);
+		
+		HBox temperatureBox = new HBox(10);
+		temperatureBox.setStyle("-fx-alignment: center-right;");
+		temperatureBox.getChildren().add(temperature);
+		temperatureBox.getChildren().add(temperatureInput);
+		
+		HBox pulseBox = new HBox(10);
+		pulseBox.setStyle("-fx-alignment: center-right;");
+		pulseBox.getChildren().add(pulse);
+		pulseBox.getChildren().add(pulseInput);
+		
+		HBox respirationBox = new HBox(10);
+		respirationBox.setStyle("-fx-alignment: center-right;");
+		respirationBox.getChildren().add(respiration);
+		respirationBox.getChildren().add(respirationInput);
+		
+		HBox pressureBox = new HBox(10);
+		pressureBox.setStyle("-fx-alignment: center-right;");
+		pressureBox.getChildren().add(bloodPressure);
+		pressureBox.getChildren().add(pressureInput);
+		
+		HBox submitBox = new HBox();
+		submitBox.setStyle("-fx-alignment: center;");
+		submitBox.getChildren().add(submitButton);
+		
+		
+
+		leftBox.getChildren().add(firstBox);
+		leftBox.getChildren().add(lastBox);
+		leftBox.getChildren().add(emailBox);
+		leftBox.getChildren().add(phoneBox);
+		leftBox.getChildren().add(historyBox);
+		leftBox.getChildren().add(insuranceBox);
+		
+		rightBox.getChildren().add(heightBox);
+		rightBox.getChildren().add(weightBox);
+		rightBox.getChildren().add(temperatureBox);
+		rightBox.getChildren().add(pulseBox);
+		rightBox.getChildren().add(respirationBox);
+		rightBox.getChildren().add(pressureBox);
+		
+		mainPane.getChildren().add(titleBox);
+		organizer1.getChildren().add(leftBox);
+		organizer1.getChildren().add(rightBox);
+		mainPane.getChildren().add(organizer1);
+		mainPane.getChildren().add(submitBox);
+
+
+		submitButton.setOnAction(new EventHandler<>() {
+			public void handle(ActionEvent event) {
+				System.out.println("Text Submitted");
+			}
+		});
+		
+		
+		StackPane root = new StackPane();
+		//root.getChildren().add(mainPane);
+		//root.getChildren().add(btn);
+		primaryStage.setScene(new Scene(mainPane, 800, 500));
+		primaryStage.show();
+	}
+}
