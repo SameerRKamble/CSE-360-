@@ -20,9 +20,9 @@ public class DoctorView{
     VBox mainLayout;
     
     //layout
-    private HeartHealthApp mainApp;
+    private PediatircAutoSystem mainApp;
     
-    public CTScanTechView(HeartHealthApp mainApp) {
+    public DoctorView(PediatircAutoSystem mainApp) {
     	this.mainApp = mainApp;
         initializeUI();
     }

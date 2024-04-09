@@ -33,9 +33,9 @@ public class PatientView{
     private VBox PatientView;
     private VBox inputLayout;
     private VBox dataLayout;
-    private HeartHealthApp mainApp;
+    private PediatircAutoSystem mainApp;
     
-    public PatientView(HeartHealthApp mainApp) {
+    public PatientView(PediatircAutoSystem mainApp) {
     	this.mainApp = mainApp;
     	initializeInputUI();
     	initializeUI();
