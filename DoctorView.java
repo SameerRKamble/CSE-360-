@@ -16,9 +16,12 @@ public class DoctorView{
     private TextArea medstext;
     private Button save;
     private Button sendMeds;
+    private Button viewHistory;
 
     //VBox mainLayout;
     BorderPane mainLayout;
+
+    boolean isHistory = false;
     
     //layout
     private PediatircAutoSystem mainApp;
@@ -28,48 +31,6 @@ public class DoctorView{
         initializeUI();
     }
     
-    // private void initializeUI()
-    // {
-    //     //Label
-    //     docNote = new Label("Doctor Notes:");
-    //     meds = new Label("Prescription:");
-    
-    //     //Text Area
-    //     docNoteText = new TextArea();
-    //     medstext = new TextArea();
-    
-    //     docNoteText.setPrefWidth(400);
-    //     docNoteText.setPrefHeight(50);
-    //     medstext.setPrefWidth(400);
-    //     medstext.setPrefHeight(50);
-    
-    //     //Button
-    //     save = new Button("Save");
-    //     save.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-    //     save.setPrefWidth(100);
-    //     save.setPrefHeight(50);
-    //     // Attach event handlers to buttons
-    //     save.setOnAction(e -> doctorNotes(docNoteText.getText(), medstext.getText()));
-    
-    //     // Layout
-    //     HBox doctorNotesBox = new HBox(docNote, docNoteText);
-    //     doctorNotesBox.setAlignment(Pos.CENTER_LEFT);
-    //     doctorNotesBox.setSpacing(10);
-    
-    //     HBox medicationsBox = new HBox(meds, medstext);
-    //     medicationsBox.setAlignment(Pos.CENTER_LEFT);
-    //     medicationsBox.setSpacing(10);
-    
-    //     mainLayout = new VBox(doctorNotesBox, medicationsBox, save);
-    //     mainLayout.setSpacing(20); // Add spacing between elements
-    //     mainLayout.setPadding(new Insets(20)); // Add padding around the VBox
-    //     mainLayout.setPrefSize(500, 300); // Set preferred size for the VBox
-    
-    //     Button goBackButton = new Button("Go Back");
-    //     goBackButton.setOnAction(e -> mainApp.showMainMenu());
-    //     VBox.setMargin(goBackButton, new Insets(10, 0, 0, 0)); // Add margin to the "Go Back" button
-    //     mainLayout.getChildren().add(goBackButton);
-    // }
 
     private void initializeUI()
 {
@@ -97,8 +58,25 @@ public class DoctorView{
     sendMeds.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
     sendMeds.setPrefWidth(100);
     sendMeds.setPrefHeight(50);
-    // Attach event handlers to buttons
     sendMeds.setOnAction(e -> doctorMedication(medstext.getText()));
+
+    viewHistory = new Button("View his");
+    viewHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+    viewHistory.setPrefWidth(100);
+    viewHistory.setPrefHeight(50);
+    if (!isHistory) 
+    {
+        viewHistory.setOnAction(e -> openHistory());
+    }
+    else
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("No history found");
+        alert.showAndWait();
+    }
+    
 
     // Layout
     mainLayout = new BorderPane();
@@ -118,13 +96,11 @@ public class DoctorView{
 
     Button goBackButton = new Button("Go Back");
     goBackButton.setOnAction(e -> mainApp.showMainMenu());
-    bottomBox.getChildren().addAll(goBackButton, save, sendMeds);
+    bottomBox.getChildren().addAll(goBackButton, save, sendMeds, viewHistory);
 
     mainLayout.setBottom(bottomBox);
 
 }
-
-
  
     //get root for the main button to use
     public BorderPane getRoot() {
@@ -159,6 +135,21 @@ public class DoctorView{
         } catch (IOException e) {
             e.printStackTrace();
         }
+	}
+
+    private void openHistory() 
+    {
+        String filename = ""; // will decide later 
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line); // Print the for now
+            }
+        } catch (IOException e) {
+            // Handle exceptions here
+            e.printStackTrace();
+        }
+
 	}
     
 }
