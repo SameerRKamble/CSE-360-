@@ -4,6 +4,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.*;
+import java.io.*;
 
 public class PediatircAutoSystem extends Application {
 	
@@ -80,6 +81,33 @@ public class PediatircAutoSystem extends Application {
         stage.setScene(scene);
 		stage.show();
     }
+
+	public void openHistory(boolean isHistory) 
+    {
+		if (isHistory) 
+		{
+			String filename = ""; // will decide later 
+			try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+				String line;
+				while ((line = reader.readLine()) != null) {
+					System.out.println(line); // Print the for now
+				}
+			} catch (IOException e) {
+				// Handle exceptions here
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("No history found");
+            alert.showAndWait();
+		}
+
+
+	}
     
     public void showMainMenu() {
     	primaryStage.setScene(mainScene); // Reuse the main scene
