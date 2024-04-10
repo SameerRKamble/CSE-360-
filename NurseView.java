@@ -278,13 +278,13 @@ public class NurseView{
         
         //write in a file
         try {
-        	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt");
-            writer.write("Weight: " + firstName + "\n");
-            writer.write("Height: " + lastName + "\n");
-            writer.write("Body Temperature: " + birthday + "\n");
-            writer.write("Blood Pressure: " + email + "\n");
-            writer.write("Known Allergies: " + phoneNumber + "\n");
-            writer.write("Health Concern: " + insuranceID + "\n");
+        	FileWriter writer = new FileWriter("_PatientVital.txt");
+            writer.write("Weight: " + Weight + "\n");
+            writer.write("Height: " + Height + "\n");
+            writer.write("Body Temperature: " + Temperature + "\n");
+            writer.write("Blood Pressure: " + Bloodpressure + "\n");
+            writer.write("Known Allergies: " + KnownAllergies + "\n");
+            writer.write("Health Concern: " + HealthConcern + "\n");
             writer.close();
         	} 
         catch (IOException e) {
