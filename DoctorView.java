@@ -126,7 +126,7 @@ public class DoctorView{
         
         //if they are all filled, create the file
         try {
-            FileWriter writer = new FileWriter(fileName);
+            FileWriter writer = new FileWriter(fileName, true);
             writer.write("Notes: " + notes + "\n");
             //writer.write("medication: " + medication + "\n");
             writer.close();
@@ -141,7 +141,7 @@ public class DoctorView{
         
         //if they are all filled, create the file
         try {
-            FileWriter writer = new FileWriter(fileName);
+            FileWriter writer = new FileWriter(fileName, true);
             writer.write("medication: " + medication + "\n");
             //writer.write("medication: " + medication + "\n");
             writer.close();
@@ -155,7 +155,7 @@ public class DoctorView{
     	
     	//if they are all filled, create the file
         try {
-            FileWriter writer = new FileWriter(fileName);
+            FileWriter writer = new FileWriter(fileName, true);
             writer.write("Immunization: " + immunization + "\n");
             writer.close();
         } catch (IOException e) {
