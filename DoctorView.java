@@ -20,6 +20,7 @@ public class DoctorView{
     private Button sendMeds;
     private Button viewHistory;
     private Button saveImmunizations;
+	private Button viewMessage;
 
 	private TextField patientIdInput;  // TextField for patient ID input
     private Button submitButton;       // Button to submit patient ID
@@ -95,6 +96,13 @@ public class DoctorView{
 
 		viewHistory.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
 
+		viewMessage = new Button("View message");
+		viewMessage.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		viewMessage.setPrefWidth(100);
+		viewMessage.setPrefHeight(50);
+		viewMessage.setOnAction(e -> sendPharmacy(medstext.getText()));
+		viewMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID));
+
 		
 		// Layout
 		mainLayout = new BorderPane();
@@ -117,7 +125,7 @@ public class DoctorView{
 
 		Button goBackButton = new Button("Go Back");
 		goBackButton.setOnAction(e -> mainApp.showMainMenu());
-		bottomBox.getChildren().addAll(goBackButton, save, sendMeds, viewHistory);
+		bottomBox.getChildren().addAll(goBackButton, save, sendMeds, viewHistory, viewMessage);
 
 		mainLayout.setBottom(bottomBox);
 	}
