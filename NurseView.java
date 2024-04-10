@@ -9,8 +9,9 @@ import java.io.*;
 import java.util.*;
 
 import javafx.geometry.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 public class NurseView{
 	
@@ -144,6 +145,11 @@ public class NurseView{
 	    goBackButton.setPrefWidth(150);
 	    goBackButton.setPrefHeight(50);
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
+
+        btnSendMessage = new Button("Send Message");
+        btnSendMessage.setPrefWidth(150);
+	    btnSendMessage.setPrefHeight(50);
+        btnSendMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID,"Nurse: "));
 	    
 	    //layout
 	    RecordVital = new GridPane();
@@ -166,6 +172,7 @@ public class NurseView{
         RecordVital.add(btnSaveVital, 2, 7);
         RecordVital.add(btnViewPastHistory, 1, 7);
         RecordVital.add(goBackButton, 0, 7);
+        RecordVital.add(btnSendMessage,3,7);
 	   
     }
 	
@@ -182,7 +189,7 @@ public class NurseView{
         LGender = new Label("Gender(M/F)");
         LPharmacy = new Label("Pharmacy");
 
-        btnSendMessage = new Button("Send Message");
+        
 
 		
 		//Text Area
@@ -241,10 +248,9 @@ public class NurseView{
         IntakegridPane.add(TxPhoneNumber, 1, 6);
         IntakegridPane.add(TxInsuranceID, 1, 7);
         IntakegridPane.add(TxPharmacy, 1, 8);
-        IntakegridPane.add(btnSendMessage, 1, 9);
         IntakegridPane.add(btnSave, 2, 9);
 
-        btnSendMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID,"Nurse: "));
+        
         
         Button goBackButton = new Button("Go Back");
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
@@ -325,15 +331,15 @@ public class NurseView{
         String Bloodpressure = TxBloodPressure.getText();
         String KnownAllergies = TxKnownAllergies.getText();
         String HealthConcern = TxHealthConcern.getText();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDate today = LocalDate.now();
-        String formattedDate = dtf.format(today);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		String formattedDateTime = dtf.format(now);
     
         String fileName = PATIENTID + "_PatientInfo.txt";
         StringBuilder fileContent = new StringBuilder();
 
         // Append the new content to the file
-        fileContent.append("\nVisit Date(YYYY/MM/DD) "+ formattedDate + "\n");
+        fileContent.append("\nVisit Date(YYYY/MM/DD HH:mm:ss) "+ formattedDateTime + "\n");
         //fileContent.append("Patient Vitals:\n");
         fileContent.append("Weight: ").append(Weight).append("\n");
         fileContent.append("Height: ").append(Height).append("\n");

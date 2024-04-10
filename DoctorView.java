@@ -6,6 +6,9 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import javafx.geometry.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class DoctorView{
 	
@@ -175,28 +178,28 @@ public class DoctorView{
 
 	private void saveDoctorNotes(String patientID) {
 
-		patientID = PATIENTID;
 		String notesString = docNoteText.getText();
 		String medsString = medstext.getText();
 		String immunizationsString = immunizationsText.getText();
-
-        String fileName = patientID + "_Notes.txt";
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDate today = LocalDate.now();
-        String formattedDate = dtf.format(today);
-        
-        //if they are all filled, create the file
-        try {
-            FileWriter writer = new FileWriter(fileName, true);
-			writer.write("\nVisit Date(YYYY/MM/DD) " + formattedDate);
-            writer.write("Notes: " + notesString + "\n");
+	
+		String fileName = patientID + "_Notes.txt";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		String formattedDateTime = dtf.format(now);
+	
+		//if they are all filled, create the file
+		try {
+			FileWriter writer = new FileWriter(fileName, true);
+			writer.write("Visit Date(YYYY/MM/DD HH:mm:ss) " + formattedDateTime + "\n");
+			writer.write("Notes: " + notesString + "\n");
 			writer.write("Medication: " + medsString + "\n");
 			writer.write("Immunization: " + immunizationsString + "\n");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
 
 	private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
