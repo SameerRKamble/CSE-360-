@@ -95,19 +95,19 @@ public class NurseView{
         submitButton = new Button("Load Patient Data");
 	    submitButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 	    submitButton.setPrefWidth(150);
-	    submitButton.setPrefHeight(50);
+	    submitButton.setPrefHeight(40);
         submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
         btnRegister = new Button("Register new account");
 	    btnRegister.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 	    btnRegister.setPrefWidth(150);
-	    btnRegister.setPrefHeight(50);
+	    btnRegister.setPrefHeight(40);
         btnRegister.setOnAction(event -> getRegister());
         
         // Back Button
         Button goBackButton = new Button("Go Back");
 	    goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 	    goBackButton.setPrefWidth(150);
-	    goBackButton.setPrefHeight(50);
+	    goBackButton.setPrefHeight(40);
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
 
         inputLayout = new VBox(20);
