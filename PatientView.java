@@ -8,22 +8,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class PatientView  {
+public class PatientView {
 
     private TextArea messageArea;
-    BorderPane root;
-
-
+    private BorderPane root;
     private PediatircAutoSystem mainApp;
+    TextField messageInput;
     
     public PatientView(PediatircAutoSystem mainApp) {
-    	this.mainApp = mainApp;
+        this.mainApp = mainApp;
         initializeUI();
     }
 
     private void initializeUI() {
-        
-
         root = new BorderPane();
         root.setPrefSize(400, 600);
 
@@ -31,25 +28,30 @@ public class PatientView  {
         messageArea.setEditable(false);
         messageArea.setWrapText(true);
 
-        TextField messageInput = new TextField();
+        messageInput = new TextField();
         messageInput.setPromptText("Type your message...");
+        messageInput.setPrefWidth(280); // Adjust width as needed
 
         Button sendMessageButton = new Button("Send");
+        sendMessageButton.setPrefSize(80, 40); // Make button larger
         sendMessageButton.setOnAction(e -> sendMessage(messageInput.getText()));
 
         Button changeInfoButton = new Button("Change Info");
+        changeInfoButton.setPrefSize(120, 40); // Make button larger
         changeInfoButton.setOnAction(e -> System.out.println("Change Info button clicked."));
 
         Button viewHistoryButton = new Button("View History");
+        viewHistoryButton.setPrefSize(120, 40); // Make button larger
         viewHistoryButton.setOnAction(e -> System.out.println("View History button clicked."));
 
         HBox messageBox = new HBox(10, messageInput, sendMessageButton);
-        VBox buttonBar = new VBox(10, changeInfoButton, viewHistoryButton);
-        
-        // Styling
-        messageArea.setStyle("-fx-background-color: white; -fx-padding: 10;");
         messageBox.setStyle("-fx-background-color: #ccd6dd; -fx-padding: 10;");
+        messageBox.setSpacing(10); // Adjust spacing as needed
+        messageBox.setPrefHeight(50); // Adjust height as needed
+
+        VBox buttonBar = new VBox(10, changeInfoButton, viewHistoryButton);
         buttonBar.setStyle("-fx-background-color: #ccd6dd; -fx-padding: 10;");
+        buttonBar.setSpacing(10); // Adjust spacing as needed
 
         root.setCenter(messageArea);
         root.setBottom(messageBox);
@@ -64,6 +66,10 @@ public class PatientView  {
         if (!message.isEmpty()) {
             messageArea.appendText(message + "\n");
             System.out.println("Message sent: " + message);
+            // Clear the input after sending
+            messageInput.clear();
         }
     }
 }
+
+    

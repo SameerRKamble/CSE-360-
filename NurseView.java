@@ -57,6 +57,10 @@ public class NurseView{
 	private GridPane IntakegridPane;
 	private PediatircAutoSystem mainApp;
 	private GridPane RecordVital;
+
+    private String PATIENTID;
+
+    boolean isHistory = false;
 	 
 	public NurseView(PediatircAutoSystem mainApp) {
 		this.mainApp = mainApp;
@@ -124,7 +128,7 @@ public class NurseView{
 	    btnSaveVital.setPrefHeight(50);
         // Attach event handlers to buttons
 	    btnSaveVital.setOnAction(e -> savePatientVitals());
-	    btnViewPastHistory.setOnAction(e -> OpenPatientHistory());
+	    btnViewPastHistory.setOnAction(e -> mainApp.openHistory(isHistory));
 	    Button goBackButton = new Button("Go Back");
 	    goBackButton.setPrefWidth(150);
 	    goBackButton.setPrefHeight(50);
@@ -230,11 +234,27 @@ public class NurseView{
     	NurseView.getChildren().add(IntakegridPane);   	
         return NurseView;
     }
+
+    // private String getID()
+    // {
+    //     // String firstName = TxFirstName.getText();
+    //     // String lastName = TxlastName.getText();
+    //     // String birthday = TxBirthday.getText();
+    //     // String email = TxEmail.getText();
+    //     // String phoneNumber = TxPhoneNumber.getText();
+    //     // String insuranceID = TxInsuranceID.getText();
+        
+    //     //Generate Patient's unique ID
+    //     String patientID = generatePatientID();
+    //     return patientID;
+    // }
     
 	//register an account for the patient
 	private void savePatientInfo() {
+
+        //getID();
 		
-		//get Patients' info
+		// //get Patients' info
 		String firstName = TxFirstName.getText();
         String lastName = TxlastName.getText();
         String birthday = TxBirthday.getText();
@@ -243,11 +263,12 @@ public class NurseView{
         String insuranceID = TxInsuranceID.getText();
         
         //Generate Patient's unique ID
-        String patientID = generatePatientID();
+        String patientID = generatePatientID(firstName, lastName, birthday);
+        PATIENTID = patientID;
         System.out.println("Generated Patient ID: " + patientID);
         //write in a file
         try {
-        	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt");
+        	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt", true);
             writer.write("First Name: " + firstName + "\n");
             writer.write("Last Name: " + lastName + "\n");
             writer.write("Birthday: " + birthday + "\n");
@@ -262,12 +283,15 @@ public class NurseView{
         
         //once nurse saves, it will lead to record vitals page
         NurseView.getChildren().clear();
-    	NurseView.getChildren().add(RecordVital);   	
+    	NurseView.getChildren().add(RecordVital); 
+        //return patientID;  	
      }
 	
 	//save patient vitals
 	private void savePatientVitals() {
 		
+
+        //String patientID = generatePatientID();
 		//get Patients' vital
 		String Weight = TxWeight.getText();
         String Height = TxHeight.getText();
@@ -278,7 +302,8 @@ public class NurseView{
         
         //write in a file
         try {
-        	FileWriter writer = new FileWriter("_PatientVital.txt");
+        	FileWriter writer = new FileWriter( PATIENTID + "_PatientInfo.txt",true);
+            writer.write("Patient Vitals:\n");
             writer.write("Weight: " + Weight + "\n");
             writer.write("Height: " + Height + "\n");
             writer.write("Body Temperature: " + Temperature + "\n");
@@ -291,11 +316,6 @@ public class NurseView{
             e.printStackTrace();
           	}
      }
-	
-	//open patient history
-	private void OpenPatientHistory() {
-		
-	}
 	
 	
     private void loadPatientData(String patientID) {
@@ -324,13 +344,13 @@ public class NurseView{
         alert.showAndWait();
     }
 	
-	private String generatePatientID() {
+	private String generatePatientID(String firstName, String lastName, String birthday) {
         String patientID;
         do {
         	//get Patients' info
-    		String firstName = TxFirstName.getText();
-            String lastName = TxlastName.getText();
-            String birthday = TxBirthday.getText();
+    		// String firstName = TxFirstName.getText();
+            // String lastName = TxlastName.getText();
+            // String birthday = TxBirthday.getText();
             // Extract the initial of the first name
             char firstInitial = firstName.charAt(0);
             // Extract month and day from the birthday
