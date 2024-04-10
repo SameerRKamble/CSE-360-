@@ -39,16 +39,23 @@ public class PatientView {
         patientIdInput = new TextField();
         patientIdInput.setPromptText("Enter Patient ID");
         
-        //button part
+        // Submit button
         submitButton = new Button("Load Patient Data");
 	    submitButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 	    submitButton.setPrefWidth(150);
 	    submitButton.setPrefHeight(40);
         submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
 
+        // Back button
+        Button goBackButton = new Button("Go Back");
+	    goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+	    goBackButton.setPrefWidth(150);
+	    goBackButton.setPrefHeight(40);
+        goBackButton.setOnAction(e -> mainApp.showMainMenu());
+
         inputLayout = new VBox(20);
         inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.getChildren().addAll(enterPatientID, patientIdInput, submitButton);
+        inputLayout.getChildren().addAll(enterPatientID, patientIdInput, submitButton, goBackButton);
         PatientView = inputLayout;
     }
 	
