@@ -48,6 +48,8 @@ public class NurseView{
     private TextArea TxHeight;
     private TextArea TxTemperature;
     private TextArea TxBloodPressure;
+    private Button btnViewPastHistory;
+    private Button btnSaveVital;
     
 	//layout
 	private GridPane IntakegridPane;
@@ -80,10 +82,8 @@ public class NurseView{
 		//UI components
 		LKnownAllergies = new Label("Known Allergies:");
 		LHealthConcern = new Label("Health Concern");
-		LPastHistory = new Label("Past History");
 	    TxKnownAllergies = new TextArea();
 	    TxHealthConcern = new TextArea();
-	    TxPastHistory = new TextArea();
 	    LWeight = new Label("Weight:");
 	    LHeight = new Label("Height:");
 	    LTemperature = new Label("Body Temperature:");
@@ -93,13 +93,22 @@ public class NurseView{
 	    TxTemperature = new TextArea();
 	    TxBloodPressure = new TextArea();
 	    
+	    //button
+	    btnViewPastHistory = new Button("View Past History");
+	    btnSaveVital = new Button("Save");
+	    btnViewPastHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+	    btnViewPastHistory.setPrefWidth(100);
+	    btnViewPastHistory.setPrefHeight(50);
+	    btnSaveVital.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+	    btnSaveVital.setPrefWidth(100);
+	    btnSaveVital.setPrefHeight(50);
+        // Attach event handlers to buttons
+	    btnSaveVital.setOnAction(e -> savePatientVitals());
+	    btnViewPastHistory.setOnAction(e -> OpenPatientHistory());
+	    
 	    //
 	    
     }
-
-	private void openPastHistory(){
-	
-	}
 	
 	private void initializeUI()
 	{
@@ -171,7 +180,8 @@ public class NurseView{
     public GridPane getRoot() {
         return IntakegridPane;
     }
-	
+    
+	//register an account for the patient
 	private void savePatientInfo() {
 		
 		//get Patients' info
@@ -200,10 +210,45 @@ public class NurseView{
             e.printStackTrace();
           	}
         
-        //nurse will be able to see the patient history at this point
-        
+        //once nurse saves, it will lead to record vitals page
         
      }
+	
+	//save patient vitals
+	private void savePatientVitals() {
+		
+		//get Patients' info
+		String firstName = TxFirstName.getText();
+        String lastName = TxlastName.getText();
+        String birthday = TxBirthday.getText();
+        String email = TxEmail.getText();
+        String phoneNumber = TxPhoneNumber.getText();
+        String insuranceID = TxInsuranceID.getText();
+        
+        //Generate Patient's unique ID
+        String patientID = generatePatientID();
+        System.out.println("Generated Patient ID: " + patientID);
+        //write in a file
+        try {
+        	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt");
+            writer.write("First Name: " + firstName + "\n");
+            writer.write("Last Name: " + lastName + "\n");
+            writer.write("Birthday: " + birthday + "\n");
+            writer.write("Email: " + email + "\n");
+            writer.write("Phone Number: " + phoneNumber + "\n");
+            writer.write("Insurance ID: " + insuranceID + "\n");
+            writer.close();
+        	} 
+        catch (IOException e) {
+            e.printStackTrace();
+          	}
+     }
+	
+	//open patient history
+	private void OpenPatientHistory() {
+		
+	}
+	
 	
     private void loadPatientData(String patientID) {
         
@@ -217,8 +262,6 @@ public class NurseView{
             showAlert("Haven't registered yet.");
             initializeUI();
         }
-        
-    	
         
     }
     
