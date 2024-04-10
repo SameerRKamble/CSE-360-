@@ -315,7 +315,7 @@ public class NurseView{
      }
 	
 	//open patient history
-	// ADD THIS IS THE MAIN CLASS PEADTRICAUTO SYSTEM
+	// ADD THIS IS THE MAIN CLASS PEADTRICAUTO SYSTEM and all the patient information and vitals are in one file
 	/* 
     private void OpenPatientHistory() {
 		String notes = "";
