@@ -88,31 +88,47 @@ public class NurseView{
         
 		//UI components
 		LKnownAllergies = new Label("Known Allergies:");
-		LHealthConcern = new Label("Health Concern");
-	    TxKnownAllergies = new TextArea();
-	    TxHealthConcern = new TextArea();
+		LHealthConcern = new Label("Health Concern:");
 	    LWeight = new Label("Weight:");
 	    LHeight = new Label("Height:");
 	    LTemperature = new Label("Body Temperature:");
 	    LBloodPressure = new Label("Blood Pressure:");
+	    TxKnownAllergies = new TextArea();
+	    TxHealthConcern = new TextArea();
 	    TxWeight = new TextArea();
 	    TxHeight = new TextArea();
 	    TxTemperature = new TextArea();
 	    TxBloodPressure = new TextArea();
 	    RecordPatientVital = new Label("Record Patient Vitals");
+	    TxKnownAllergies.setPrefWidth(400);
+	    TxKnownAllergies.setPrefHeight(50);
+	    TxWeight.setPrefWidth(400);
+	    TxWeight.setPrefHeight(50);
+	    TxBloodPressure.setPrefWidth(400);
+	    TxBloodPressure.setPrefHeight(50);
+	    TxHealthConcern.setPrefWidth(400);
+	    TxHealthConcern.setPrefHeight(50);
+	    TxHeight.setPrefWidth(400);
+	    TxHeight.setPrefHeight(50);
+	    TxTemperature.setPrefWidth(400);
+	    TxTemperature.setPrefHeight(50);
 	    
 	    //button
 	    btnViewPastHistory = new Button("View Past History");
 	    btnSaveVital = new Button("Save");
 	    btnViewPastHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    btnViewPastHistory.setPrefWidth(100);
+	    btnViewPastHistory.setPrefWidth(200);
 	    btnViewPastHistory.setPrefHeight(50);
 	    btnSaveVital.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    btnSaveVital.setPrefWidth(100);
+	    btnSaveVital.setPrefWidth(150);
 	    btnSaveVital.setPrefHeight(50);
         // Attach event handlers to buttons
 	    btnSaveVital.setOnAction(e -> savePatientVitals());
 	    btnViewPastHistory.setOnAction(e -> OpenPatientHistory());
+	    Button goBackButton = new Button("Go Back");
+	    goBackButton.setPrefWidth(150);
+	    goBackButton.setPrefHeight(50);
+        goBackButton.setOnAction(e -> mainApp.showMainMenu());
 	    
 	    //layout
 	    RecordVital = new GridPane();
@@ -133,7 +149,9 @@ public class NurseView{
 	    RecordVital.add(TxKnownAllergies, 1, 5);
 	    RecordVital.add(TxHealthConcern, 1, 6);
 	    RecordVital.add(btnSaveVital, 2, 7);
-	    RecordVital.add(btnViewPastHistory, 2, 5);
+	    RecordVital.add(btnViewPastHistory, 1, 7);
+	    RecordVital.add(goBackButton, 0, 7);
+	   
     }
 	
 	private void initializeUI()
@@ -243,32 +261,30 @@ public class NurseView{
           	}
         
         //once nurse saves, it will lead to record vitals page
-        
+        NurseView.getChildren().clear();
+    	NurseView.getChildren().add(RecordVital);   	
      }
 	
 	//save patient vitals
 	private void savePatientVitals() {
 		
-		//get Patients' info
-		String firstName = TxFirstName.getText();
-        String lastName = TxlastName.getText();
-        String birthday = TxBirthday.getText();
-        String email = TxEmail.getText();
-        String phoneNumber = TxPhoneNumber.getText();
-        String insuranceID = TxInsuranceID.getText();
+		//get Patients' vital
+		String Weight = TxWeight.getText();
+        String Height = TxHeight.getText();
+        String Temperature = TxTemperature.getText();
+        String Bloodpressure = TxBloodPressure.getText();
+        String KnownAllergies = TxKnownAllergies.getText();
+        String HealthConcern = TxHealthConcern.getText();
         
-        //Generate Patient's unique ID
-        String patientID = generatePatientID();
-        System.out.println("Generated Patient ID: " + patientID);
         //write in a file
         try {
         	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt");
-            writer.write("First Name: " + firstName + "\n");
-            writer.write("Last Name: " + lastName + "\n");
-            writer.write("Birthday: " + birthday + "\n");
-            writer.write("Email: " + email + "\n");
-            writer.write("Phone Number: " + phoneNumber + "\n");
-            writer.write("Insurance ID: " + insuranceID + "\n");
+            writer.write("Weight: " + firstName + "\n");
+            writer.write("Height: " + lastName + "\n");
+            writer.write("Body Temperature: " + birthday + "\n");
+            writer.write("Blood Pressure: " + email + "\n");
+            writer.write("Known Allergies: " + phoneNumber + "\n");
+            writer.write("Health Concern: " + insuranceID + "\n");
             writer.close();
         	} 
         catch (IOException e) {
@@ -292,9 +308,11 @@ public class NurseView{
         //if the id cannot found or not register
         if (!patientID.matches("\\d{5}")) {
             showAlert("Haven't registered yet.");
-            initializeUI();
+            return;
         }
-        
+        //if the id exists, then go to the record vital page 
+        NurseView.getChildren().clear();
+    	NurseView.getChildren().add(RecordVital);   	
     }
     
     // Utility method to show an alert dialog
