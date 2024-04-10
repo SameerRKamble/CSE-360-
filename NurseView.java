@@ -30,6 +30,7 @@ public class NurseView{
 	
 	private TextField patientIdInput;  // TextField for patient ID input
     private Button submitButton;       // Button to submit patient ID
+    private Button btnRegister;
     private VBox inputLayout; 
     private VBox NurseView;
 	
@@ -63,18 +64,22 @@ public class NurseView{
         initializeUI();//register only if the id not found
         initializeHealthUI();//record vitals
     }
+	
 	//check id first
 	private void initializeInputUI() {
         // Patient ID input section   
         patientIdInput = new TextField();
         patientIdInput.setPromptText("Enter Patient ID");
         
+        //button part
         submitButton = new Button("Load Patient Data");
         submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
+        btnRegister = new Button("Register new account");
+        btnRegister.setOnAction(event -> getRegister());
 
         inputLayout = new VBox(20);
         inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton);
+        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton, btnRegister);
         NurseView = inputLayout;
     }
 	
@@ -198,8 +203,14 @@ public class NurseView{
 
 
 	 //get root for the main button to use
-    public GridPane getRoot() {
-        return IntakegridPane;
+    public VBox getRoot() {
+        return NurseView;
+    }
+    
+    public VBox getRegister() {
+    	NurseView.getChildren().clear();
+    	NurseView.getChildren().add(IntakegridPane);   	
+        return NurseView;
     }
     
 	//register an account for the patient
