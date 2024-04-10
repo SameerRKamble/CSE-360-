@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -28,112 +27,13 @@ public class NurseView{
 	private TextArea TxInsuranceID;
 	private Button btnSave;
 	
-	private TextField patientIdInput;  // TextField for patient ID input
-    private Button submitButton;       // Button to submit patient ID
-    private Button btnRegister;
-    private VBox inputLayout; 
-    private VBox NurseView;
-	
-    //health concern layout
-    private Label LKnownAllergies;
-    private Label LHealthConcern;
-    private Label LPastHistory;
-    private Label LWeight;
-    private Label LHeight;
-    private Label LTemperature;
-    private Label LBloodPressure;
-    private TextArea TxKnownAllergies;
-    private TextArea TxHealthConcern;
-    private TextArea TxPastHistory;
-    private TextArea TxWeight;
-    private TextArea TxHeight;
-    private TextArea TxTemperature;
-    private TextArea TxBloodPressure;
-    private Button btnViewPastHistory;
-    private Button btnSaveVital;
-    private Label RecordPatientVital;
-    
 	//layout
 	private GridPane IntakegridPane;
 	private PediatircAutoSystem mainApp;
-	private GridPane RecordVital;
 	 
 	public NurseView(PediatircAutoSystem mainApp) {
 		this.mainApp = mainApp;
-		initializeInputUI(); //check ID first
-        initializeUI();//register only if the id not found
-        initializeHealthUI();//record vitals
-    }
-	
-	//check id first
-	private void initializeInputUI() {
-        // Patient ID input section   
-        patientIdInput = new TextField();
-        patientIdInput.setPromptText("Enter Patient ID");
-        
-        //button part
-        submitButton = new Button("Load Patient Data");
-        submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
-        btnRegister = new Button("Register new account");
-        btnRegister.setOnAction(event -> getRegister());
-
-        inputLayout = new VBox(20);
-        inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton, btnRegister);
-        NurseView = inputLayout;
-    }
-	
-	//health concern part
-	private void initializeHealthUI() {
-        
-		//UI components
-		LKnownAllergies = new Label("Known Allergies:");
-		LHealthConcern = new Label("Health Concern");
-	    TxKnownAllergies = new TextArea();
-	    TxHealthConcern = new TextArea();
-	    LWeight = new Label("Weight:");
-	    LHeight = new Label("Height:");
-	    LTemperature = new Label("Body Temperature:");
-	    LBloodPressure = new Label("Blood Pressure:");
-	    TxWeight = new TextArea();
-	    TxHeight = new TextArea();
-	    TxTemperature = new TextArea();
-	    TxBloodPressure = new TextArea();
-	    RecordPatientVital = new Label("Record Patient Vitals");
-	    
-	    //button
-	    btnViewPastHistory = new Button("View Past History");
-	    btnSaveVital = new Button("Save");
-	    btnViewPastHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    btnViewPastHistory.setPrefWidth(100);
-	    btnViewPastHistory.setPrefHeight(50);
-	    btnSaveVital.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    btnSaveVital.setPrefWidth(100);
-	    btnSaveVital.setPrefHeight(50);
-        // Attach event handlers to buttons
-	    btnSaveVital.setOnAction(e -> savePatientVitals());
-	    btnViewPastHistory.setOnAction(e -> OpenPatientHistory());
-	    
-	    //layout
-	    RecordVital = new GridPane();
-	    RecordVital.setHgap(30);
-	    RecordVital.setVgap(30);
-	    RecordVital.setPadding(new Insets(50));
-	    RecordVital.add(RecordPatientVital, 1, 0);
-	    RecordVital.add(LWeight, 0, 1);
-	    RecordVital.add(LHeight, 0, 2);
-	    RecordVital.add(LTemperature, 0, 3);
-	    RecordVital.add(LBloodPressure, 0, 4);
-	    RecordVital.add(LKnownAllergies, 0, 5);
-	    RecordVital.add(LHealthConcern, 0, 6);
-	    RecordVital.add(TxWeight, 1, 1);
-	    RecordVital.add(TxHeight, 1, 2);
-	    RecordVital.add(TxTemperature, 1, 3);
-	    RecordVital.add(TxBloodPressure, 1, 4);
-	    RecordVital.add(TxKnownAllergies, 1, 5);
-	    RecordVital.add(TxHealthConcern, 1, 6);
-	    RecordVital.add(btnSaveVital, 2, 7);
-	    RecordVital.add(btnViewPastHistory, 2, 5);
+        initializeUI();
     }
 	
 	private void initializeUI()
@@ -203,17 +103,10 @@ public class NurseView{
 
 
 	 //get root for the main button to use
-    public VBox getRoot() {
-        return NurseView;
+    public GridPane getRoot() {
+        return IntakegridPane;
     }
-    
-    public VBox getRegister() {
-    	NurseView.getChildren().clear();
-    	NurseView.getChildren().add(IntakegridPane);   	
-        return NurseView;
-    }
-    
-	//register an account for the patient
+	
 	private void savePatientInfo() {
 		
 		//get Patients' info
@@ -242,69 +135,10 @@ public class NurseView{
             e.printStackTrace();
           	}
         
-        //once nurse saves, it will lead to record vitals page
+        //nurse will be able to see the patient history at this point
+        
         
      }
-	
-	//save patient vitals
-	private void savePatientVitals() {
-		
-		//get Patients' info
-		String firstName = TxFirstName.getText();
-        String lastName = TxlastName.getText();
-        String birthday = TxBirthday.getText();
-        String email = TxEmail.getText();
-        String phoneNumber = TxPhoneNumber.getText();
-        String insuranceID = TxInsuranceID.getText();
-        
-        //Generate Patient's unique ID
-        String patientID = generatePatientID();
-        System.out.println("Generated Patient ID: " + patientID);
-        //write in a file
-        try {
-        	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt");
-            writer.write("First Name: " + firstName + "\n");
-            writer.write("Last Name: " + lastName + "\n");
-            writer.write("Birthday: " + birthday + "\n");
-            writer.write("Email: " + email + "\n");
-            writer.write("Phone Number: " + phoneNumber + "\n");
-            writer.write("Insurance ID: " + insuranceID + "\n");
-            writer.close();
-        	} 
-        catch (IOException e) {
-            e.printStackTrace();
-          	}
-     }
-	
-	//open patient history
-	private void OpenPatientHistory() {
-		
-	}
-	
-	
-    private void loadPatientData(String patientID) {
-        
-    	// Validate patient ID and load data
-        if (patientID == null) {
-            showAlert("No patient ID input.");
-            return;
-        }
-        //if the id cannot found or not register
-        if (!patientID.matches("\\d{5}")) {
-            showAlert("Haven't registered yet.");
-            initializeUI();
-        }
-        
-    }
-    
-    // Utility method to show an alert dialog
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 	
 	private String generatePatientID() {
         String patientID;
@@ -324,4 +158,8 @@ public class NurseView{
         } while (new File(patientID + "_PatientInfo.txt").exists());
         return patientID;
     }
+	
+	
+		
+
 }
