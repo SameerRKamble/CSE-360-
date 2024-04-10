@@ -41,6 +41,7 @@ public class PediatircAutoSystem extends Application {
 
 
 
+
 	boolean patientExists = false;
 
     
@@ -86,7 +87,7 @@ public class PediatircAutoSystem extends Application {
 	
 	private void openNurseView(Stage stage) {
 		NurseView NurseView = new NurseView(this);
-        Scene scene = new Scene(NurseView.getRoot(), 800, 600);
+        Scene scene = new Scene(NurseView.getRoot(), 800, 650);
         stage.setScene(scene);
 		stage.show();
     }
