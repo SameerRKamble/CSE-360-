@@ -82,26 +82,26 @@ public class DoctorView{
 		//Button
 		save = new Button("Save");
 		save.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-		save.setPrefWidth(100);
+		save.setPrefWidth(150);
 		save.setPrefHeight(50);
 		save.setOnAction(e -> saveDoctorNotes(PATIENTID));
 
-		sendMeds = new Button("send meds");
+		sendMeds = new Button("Send medications");
 		sendMeds.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-		sendMeds.setPrefWidth(100);
+		sendMeds.setPrefWidth(150);
 		sendMeds.setPrefHeight(50);
 		sendMeds.setOnAction(e -> sendPharmacy(medstext.getText()));
 
-		viewHistory = new Button("View his");
+		viewHistory = new Button("View patient's history");
 		viewHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-		viewHistory.setPrefWidth(100);
+		viewHistory.setPrefWidth(150);
 		viewHistory.setPrefHeight(50);
 
 		viewHistory.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
 
-		viewMessage = new Button("View message");
+		viewMessage = new Button("View messages");
 		viewMessage.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-		viewMessage.setPrefWidth(100);
+		viewMessage.setPrefWidth(150);
 		viewMessage.setPrefHeight(50);
 		viewMessage.setOnAction(e -> sendPharmacy(medstext.getText()));
 		viewMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID,"Doctor: "));
@@ -127,6 +127,9 @@ public class DoctorView{
 		bottomBox.setPadding(new Insets(10, 0, 0, 0)); // Add padding to the bottom
 
 		Button goBackButton = new Button("Go Back");
+		goBackButton.setPrefWidth(100);
+		goBackButton.setPrefHeight(50);
+		goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 		goBackButton.setOnAction(e -> mainApp.showMainMenu());
 		bottomBox.getChildren().addAll(goBackButton, save, sendMeds, viewHistory, viewMessage);
 
