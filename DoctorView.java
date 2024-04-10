@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
 import java.io.*;
 import javafx.geometry.*;
@@ -25,6 +26,7 @@ public class DoctorView{
     private Button saveImmunizations;
 	private Button viewMessage;
 
+	private Label enterPatientID;
 	private TextField patientIdInput;  // TextField for patient ID input
     private Button submitButton;       // Button to submit patient ID
     private VBox inputLayout; 
@@ -46,20 +48,32 @@ public class DoctorView{
     }
 
 	private void initializeInputUI() {
+		// Enter Patient ID Label
+		enterPatientID = new Label("Enter Patient ID:");
+		enterPatientID.setFont(new Font("Arial", 20));
+
         // Patient ID input section   
         patientIdInput = new TextField();
         patientIdInput.setPromptText("Enter Patient ID");
         
         //button part
         submitButton = new Button("Load Patient Data");
+		submitButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		submitButton.setPrefWidth(150);
+		submitButton.setPrefHeight(40);
         submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
+
+		Button goBackButton = new Button("Go Back");
+		goBackButton.setPrefWidth(150);
+		goBackButton.setPrefHeight(40);
+		goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		goBackButton.setOnAction(e -> mainApp.showMainMenu());
 
         inputLayout = new VBox(20);
         inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton);
+        inputLayout.getChildren().addAll(enterPatientID, patientIdInput, submitButton, goBackButton);
         DoctorView = inputLayout;
-    }
-    
+	}
 
     private void initializeUI() {
 		//Label
