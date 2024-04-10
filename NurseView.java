@@ -50,16 +50,18 @@ public class NurseView{
     private TextArea TxBloodPressure;
     private Button btnViewPastHistory;
     private Button btnSaveVital;
+    private Label RecordPatientVital;
     
 	//layout
 	private GridPane IntakegridPane;
 	private PediatircAutoSystem mainApp;
+	private GridPane RecordVital;
 	 
 	public NurseView(PediatircAutoSystem mainApp) {
 		this.mainApp = mainApp;
 		initializeInputUI(); //check ID first
-        initializeUI();
-        initializeHealthUI();
+        initializeUI();//register only if the id not found
+        initializeHealthUI();//record vitals
     }
 	//check id first
 	private void initializeInputUI() {
@@ -92,6 +94,7 @@ public class NurseView{
 	    TxHeight = new TextArea();
 	    TxTemperature = new TextArea();
 	    TxBloodPressure = new TextArea();
+	    RecordPatientVital = new Label("Record Patient Vitals");
 	    
 	    //button
 	    btnViewPastHistory = new Button("View Past History");
@@ -106,8 +109,26 @@ public class NurseView{
 	    btnSaveVital.setOnAction(e -> savePatientVitals());
 	    btnViewPastHistory.setOnAction(e -> OpenPatientHistory());
 	    
-	    //
-	    
+	    //layout
+	    RecordVital = new GridPane();
+	    RecordVital.setHgap(30);
+	    RecordVital.setVgap(30);
+	    RecordVital.setPadding(new Insets(50));
+	    RecordVital.add(RecordPatientVital, 1, 0);
+	    RecordVital.add(LWeight, 0, 1);
+	    RecordVital.add(LHeight, 0, 2);
+	    RecordVital.add(LTemperature, 0, 3);
+	    RecordVital.add(LBloodPressure, 0, 4);
+	    RecordVital.add(LKnownAllergies, 0, 5);
+	    RecordVital.add(LHealthConcern, 0, 6);
+	    RecordVital.add(TxWeight, 1, 1);
+	    RecordVital.add(TxHeight, 1, 2);
+	    RecordVital.add(TxTemperature, 1, 3);
+	    RecordVital.add(TxBloodPressure, 1, 4);
+	    RecordVital.add(TxKnownAllergies, 1, 5);
+	    RecordVital.add(TxHealthConcern, 1, 6);
+	    RecordVital.add(btnSaveVital, 2, 7);
+	    RecordVital.add(btnViewPastHistory, 2, 5);
     }
 	
 	private void initializeUI()
@@ -292,8 +313,4 @@ public class NurseView{
         } while (new File(patientID + "_PatientInfo.txt").exists());
         return patientID;
     }
-	
-	
-		
-
 }
