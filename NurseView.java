@@ -52,6 +52,18 @@ public class NurseView{
     private Button btnViewPastHistory;
     private Button btnSaveVital;
     private Label RecordPatientVital;
+
+    //view past history
+    // add THIS IN MAIN
+    // private Button viewPastButton;
+    // private Label LDoctorNotes;
+    // private Label LPrescribedMeds;
+    // private Label LImmunizations;
+    // private Label LVitals;
+    // private TextArea TxDoctorNotes;
+    // private TextArea TxPrescribedMeds;
+    // private TextArea TxImmunizations;
+    // private TextArea TxVitals;
     
 	//layout
 	private GridPane IntakegridPane;
@@ -235,24 +247,11 @@ public class NurseView{
         return NurseView;
     }
 
-    // private String getID()
-    // {
-    //     // String firstName = TxFirstName.getText();
-    //     // String lastName = TxlastName.getText();
-    //     // String birthday = TxBirthday.getText();
-    //     // String email = TxEmail.getText();
-    //     // String phoneNumber = TxPhoneNumber.getText();
-    //     // String insuranceID = TxInsuranceID.getText();
-        
-    //     //Generate Patient's unique ID
-    //     String patientID = generatePatientID();
-    //     return patientID;
-    // }
+
     
 	//register an account for the patient
 	private void savePatientInfo() {
 
-        //getID();
 		
 		// //get Patients' info
 		String firstName = TxFirstName.getText();
@@ -290,8 +289,6 @@ public class NurseView{
 	//save patient vitals
 	private void savePatientVitals() {
 		
-
-        //String patientID = generatePatientID();
 		//get Patients' vital
 		String Weight = TxWeight.getText();
         String Height = TxHeight.getText();
@@ -316,6 +313,89 @@ public class NurseView{
             e.printStackTrace();
           	}
      }
+	
+	//open patient history
+	// ADD THIS IS THE MAIN CLASS PEADTRICAUTO SYSTEM
+	/* 
+    private void OpenPatientHistory() {
+		String notes = "";
+		String meds = "";
+		String immunizations = "";
+		String vitals = "";
+		
+		String notesFile = "Notes.txt";
+		String medsFile = "Medication.txt";
+		String immunizationFile = "Immunizations.txt";
+		String vitalsFile = "Vitals.txt";
+		
+		
+		//read from notes file
+        try (BufferedReader reader = new BufferedReader(new FileReader(notesFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                notes = notes + line + "\n";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        //read from medication file
+        try (BufferedReader reader = new BufferedReader(new FileReader(medsFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                meds = meds + line + "\n";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        //read from immunizations file
+        try (BufferedReader reader = new BufferedReader(new FileReader(immunizationFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                immunizations = immunizations + line + "\n";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        //read from vitals file
+        try (BufferedReader reader = new BufferedReader(new FileReader(vitalsFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                vitals = vitals + line + "\n";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+		
+		LDoctorNotes = new Label("Doctor's notes:");
+		LPrescribedMeds = new Label("Prescribed Medication:");
+		LImmunizations = new Label("Immunization History:");
+		LVitals = new Label("Vitals:");
+		TxDoctorNotes = new TextArea(notes);
+		TxPrescribedMeds = new TextArea(meds);
+		TxImmunizations = new TextArea(immunizations);
+		TxVitals = new TextArea(vitals);
+		
+		IntakegridPane = new GridPane();
+        IntakegridPane.setHgap(30);
+        IntakegridPane.setVgap(30);
+        IntakegridPane.setPadding(new Insets(50));
+        IntakegridPane.add(LDoctorNotes, 0, 1);
+        IntakegridPane.add(LPrescribedMeds, 0, 2);
+        IntakegridPane.add(LImmunizations, 0, 3);
+        IntakegridPane.add(LVitals, 0, 4);
+        IntakegridPane.add(TxDoctorNotes, 1, 1);
+        IntakegridPane.add(TxPrescribedMeds, 1, 2);
+        IntakegridPane.add(TxImmunizations, 1, 3);
+        IntakegridPane.add(TxVitals, 1, 4);
+        Button goBackButton = new Button("Go Back");
+        goBackButton.setOnAction(e -> mainApp.showMainMenu());
+        IntakegridPane.add(goBackButton, 1, 5);
+	}
+    */
 	
 	
     private void loadPatientData(String patientID) {
@@ -347,10 +427,6 @@ public class NurseView{
 	private String generatePatientID(String firstName, String lastName, String birthday) {
         String patientID;
         do {
-        	//get Patients' info
-    		// String firstName = TxFirstName.getText();
-            // String lastName = TxlastName.getText();
-            // String birthday = TxBirthday.getText();
             // Extract the initial of the first name
             char firstInitial = firstName.charAt(0);
             // Extract month and day from the birthday
