@@ -181,7 +181,7 @@ public class DoctorView{
 		String immunizationsString = immunizationsText.getText();
 
         String fileName = patientID + "_Notes.txt";
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDate today = LocalDate.now();
         String formattedDate = dtf.format(today);
         
