@@ -23,12 +23,12 @@ public class NurseView{
 	private Label LPhoneNumber;
 	private Label LInsuranceID;
 	private Label PatientIntake;
-	private TextArea TxFirstName;
-	private TextArea TxlastName;
-	private TextArea TxBirthday;
-	private TextArea TxEmail;
-	private TextArea TxPhoneNumber;
-	private TextArea TxInsuranceID;
+	private TextField TxFirstName;
+	private TextField TxlastName;
+	private TextField TxBirthday;
+	private TextField TxEmail;
+	private TextField TxPhoneNumber;
+	private TextField TxInsuranceID;
 	private Button btnSave;
 	
 	private Label enterPatientID;
@@ -52,13 +52,13 @@ public class NurseView{
     private TextArea TxKnownAllergies;
     private TextArea TxHealthConcern;
     private TextArea TxPastHistory;
-    private TextArea TxWeight;
-    private TextArea TxHeight;
-    private TextArea TxTemperature;
-    private TextArea TxBloodPressure;
-    private TextArea TxDate;
-    private TextArea TxGender;
-    private TextArea TxPharmacy;
+    private TextField TxWeight;
+    private TextField TxHeight;
+    private TextField TxTemperature;
+    private TextField TxBloodPressure;
+    private TextField TxDate;
+    private TextField TxGender;
+    private TextField TxPharmacy;
     private Button btnViewPastHistory;
     private Button btnSaveVital;
     private Button btnSendMessage;
@@ -72,8 +72,6 @@ public class NurseView{
     private String PATIENTID;
     private boolean isHistory = false;
     
-   
-	 
 	public NurseView(PediatircAutoSystem mainApp) {
 		this.mainApp = mainApp;
 		initializeInputUI(); //check ID first
@@ -128,10 +126,10 @@ public class NurseView{
 	    LBloodPressure = new Label("Blood Pressure:");
 	    TxKnownAllergies = new TextArea();
 	    TxHealthConcern = new TextArea();
-	    TxWeight = new TextArea();
-	    TxHeight = new TextArea();
-	    TxTemperature = new TextArea();
-	    TxBloodPressure = new TextArea();
+	    TxWeight = new TextField();
+	    TxHeight = new TextField();
+	    TxTemperature = new TextField();
+	    TxBloodPressure = new TextField();
 	    RecordPatientVital = new Label("Record Patient Vitals");
 	    TxKnownAllergies.setPrefWidth(400);
 	    TxKnownAllergies.setPrefHeight(50);
@@ -160,9 +158,13 @@ public class NurseView{
 	    btnSaveVital.setOnAction(e -> savePatientVitals());
 	    btnViewPastHistory.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
 	    Button goBackButton = new Button("Go Back");
+	    goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 	    goBackButton.setPrefWidth(150);
 	    goBackButton.setPrefHeight(50);
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
+        
+        // Record Patient Vitals Label
+        RecordPatientVital.setFont(new Font("Arial", 20));
 	    
 	    //layout
 	    RecordVital = new GridPane();
@@ -188,8 +190,8 @@ public class NurseView{
 	   
     }
 	
-	private void initializeUI()
-	{
+	private void initializeUI() {
+		
 		//Label
 		LfirstName = new Label("First Name:");
 		LlastName = new Label("Last Name:");
@@ -203,16 +205,15 @@ public class NurseView{
 
         btnSendMessage = new Button("Send Message");
 
-		
 		//Text Area
-		TxFirstName = new TextArea();
-        TxlastName = new TextArea();
-        TxBirthday = new TextArea();
-        TxEmail = new TextArea();
-        TxPhoneNumber = new TextArea();
-        TxInsuranceID = new TextArea();
-        TxGender = new TextArea();
-        TxPharmacy = new TextArea();
+		TxFirstName = new TextField();
+        TxlastName = new TextField();
+        TxBirthday = new TextField();
+        TxEmail = new TextField();
+        TxPhoneNumber = new TextField();
+        TxInsuranceID = new TextField();
+        TxGender = new TextField();
+        TxPharmacy = new TextField();
         TxFirstName.setPrefWidth(400);
         TxFirstName.setPrefHeight(50);
         TxlastName.setPrefWidth(400);
@@ -233,7 +234,7 @@ public class NurseView{
         //Button
         btnSave = new Button("Save");
         btnSave.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-        btnSave.setPrefWidth(100);
+        btnSave.setPrefWidth(150);
 		btnSave.setPrefHeight(50);
         // Attach event handlers to buttons
         btnSave.setOnAction(e -> savePatientInfo());
@@ -262,10 +263,20 @@ public class NurseView{
         IntakegridPane.add(TxPharmacy, 1, 8);
         IntakegridPane.add(btnSendMessage, 1, 9);
         IntakegridPane.add(btnSave, 2, 9);
+        
+        // Patient Intake Label
+        PatientIntake.setFont(new Font("Arial", 20));
 
+        // Send Message Button
+        btnSendMessage.setPrefWidth(150);
+        btnSendMessage.setPrefHeight(50);
+        btnSendMessage.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
         btnSendMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID, "Nurse: "));
         
         Button goBackButton = new Button("Go Back");
+        goBackButton.setPrefWidth(150);
+        goBackButton.setPrefHeight(50);
+        goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
         IntakegridPane.add(goBackButton, 0, 9);
 		
@@ -286,7 +297,6 @@ public class NurseView{
 	//register an account for the patient
 	private void savePatientInfo() {
 
-		
 		// //get Patients' info
 		String firstName = TxFirstName.getText();
         String lastName = TxlastName.getText();
