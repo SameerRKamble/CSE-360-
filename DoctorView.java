@@ -23,7 +23,6 @@ public class DoctorView{
 
 	private TextField patientIdInput;  // TextField for patient ID input
     private Button submitButton;       // Button to submit patient ID
-    private Button btnRegister;
     private VBox inputLayout; 
     private VBox DoctorView;
 
@@ -87,7 +86,7 @@ public class DoctorView{
 		sendMeds.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 		sendMeds.setPrefWidth(100);
 		sendMeds.setPrefHeight(50);
-		//sendMeds.setOnAction(e -> doctorMedication(medstext.getText()));
+		sendMeds.setOnAction(e -> sendPharmacy(medstext.getText()));
 
 		viewHistory = new Button("View his");
 		viewHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
@@ -127,6 +126,26 @@ public class DoctorView{
     public VBox getRoot() {
         return DoctorView;
     }
+
+	private void sendPharmacy(String message)
+	{
+		String pharmacy = "";
+		try (BufferedReader reader = new BufferedReader(new FileReader(PATIENTID + "_PatientInfo.txt"))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Pharmacy:")) {
+                    pharmacy = line.substring(line.indexOf(":") + 1);
+                    break;
+				}
+			}
+		}
+			catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		showAlert("Medication send to Pharmacy " + pharmacy);
+	}
+
 
 	private void loadPatientData(String patientID) {
         

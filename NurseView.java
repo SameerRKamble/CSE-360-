@@ -42,7 +42,9 @@ public class NurseView{
     private Label LHeight;
     private Label LTemperature;
     private Label LBloodPressure;
-    private Label date;
+    private Label LDate;
+    private Label LGender;
+    private Label LPharmacy;
     private TextArea TxKnownAllergies;
     private TextArea TxHealthConcern;
     private TextArea TxPastHistory;
@@ -51,6 +53,8 @@ public class NurseView{
     private TextArea TxTemperature;
     private TextArea TxBloodPressure;
     private TextArea TxDate;
+    private TextArea TxGender;
+    private TextArea TxPharmacy;
     private Button btnViewPastHistory;
     private Button btnSaveVital;
     private Label RecordPatientVital;
@@ -100,7 +104,7 @@ public class NurseView{
 	    LHeight = new Label("Height:");
 	    LTemperature = new Label("Body Temperature:");
 	    LBloodPressure = new Label("Blood Pressure:");
-        date = new Label("Date(MM/DD/YY)");
+        LDate = new Label("Date(MM/DD/YY)");
         TxDate = new TextArea();
 	    TxKnownAllergies = new TextArea();
 	    TxHealthConcern = new TextArea();
@@ -148,14 +152,14 @@ public class NurseView{
 	    RecordVital.setVgap(30);
 	    RecordVital.setPadding(new Insets(50));
 	    RecordVital.add(RecordPatientVital, 1, 0);
-        RecordVital.add(date, 0, 1);
-        RecordVital.add(TxDate, 1, 1);
+        RecordVital.add(LDate, 0, 1);
         RecordVital.add(LWeight, 0, 2);
         RecordVital.add(LHeight, 0, 3);
         RecordVital.add(LTemperature, 0, 4);
         RecordVital.add(LBloodPressure, 0, 5);
         RecordVital.add(LKnownAllergies, 0, 6);
         RecordVital.add(LHealthConcern, 0, 7);
+        RecordVital.add(TxDate, 1, 1);
         RecordVital.add(TxWeight, 1, 2);
         RecordVital.add(TxHeight, 1, 3);
         RecordVital.add(TxTemperature, 1, 4);
@@ -178,6 +182,9 @@ public class NurseView{
 		LPhoneNumber = new Label("Phone Number:");
 		LInsuranceID = new Label("Insurance ID:");
 		PatientIntake = new Label("Patient Intake Form");
+        LGender = new Label("Gender(M/F)");
+        LPharmacy = new Label("Pharmacy");
+
 		
 		//Text Area
 		TxFirstName = new TextArea();
@@ -186,6 +193,8 @@ public class NurseView{
         TxEmail = new TextArea();
         TxPhoneNumber = new TextArea();
         TxInsuranceID = new TextArea();
+        TxGender = new TextArea();
+        TxPharmacy = new TextArea();
         TxFirstName.setPrefWidth(400);
         TxFirstName.setPrefHeight(50);
         TxlastName.setPrefWidth(400);
@@ -198,6 +207,10 @@ public class NurseView{
         TxPhoneNumber.setPrefHeight(50);
         TxInsuranceID.setPrefWidth(400);
         TxInsuranceID.setPrefHeight(50);
+        TxGender.setPrefWidth(400);
+        TxGender.setPrefHeight(50);
+        TxPharmacy.setPrefWidth(400);
+        TxPharmacy.setPrefHeight(50);
        
         //Button
         btnSave = new Button("Save");
@@ -215,21 +228,25 @@ public class NurseView{
         IntakegridPane.add(PatientIntake, 1, 0);
         IntakegridPane.add(LfirstName, 0, 1);
         IntakegridPane.add(LlastName, 0, 2);
-        IntakegridPane.add(LBirthday, 0, 3);
-        IntakegridPane.add(LEmail, 0, 4);
-        IntakegridPane.add(LPhoneNumber, 0, 5);
-        IntakegridPane.add(LInsuranceID, 0, 6);
+        IntakegridPane.add(LGender, 0, 3);
+        IntakegridPane.add(LBirthday, 0, 4);
+        IntakegridPane.add(LEmail, 0, 5);
+        IntakegridPane.add(LPhoneNumber, 0, 6);
+        IntakegridPane.add(LInsuranceID, 0, 7);
+        IntakegridPane.add(LPharmacy, 0, 8);
         IntakegridPane.add(TxFirstName, 1, 1);
         IntakegridPane.add(TxlastName, 1, 2);
-        IntakegridPane.add(TxBirthday, 1, 3);
-        IntakegridPane.add(TxEmail, 1, 4);
-        IntakegridPane.add(TxPhoneNumber, 1, 5);
-        IntakegridPane.add(TxInsuranceID, 1, 6);
-        IntakegridPane.add(btnSave, 2, 7);
+        IntakegridPane.add(TxGender, 1 , 3);
+        IntakegridPane.add(TxBirthday, 1, 4);
+        IntakegridPane.add(TxEmail, 1, 5);
+        IntakegridPane.add(TxPhoneNumber, 1, 6);
+        IntakegridPane.add(TxInsuranceID, 1, 7);
+        IntakegridPane.add(TxPharmacy, 1, 8);
+        IntakegridPane.add(btnSave, 2, 9);
         
         Button goBackButton = new Button("Go Back");
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
-        IntakegridPane.add(goBackButton, 1, 7);
+        IntakegridPane.add(goBackButton, 1, 9);
 		
 	}
 
@@ -244,7 +261,6 @@ public class NurseView{
     	NurseView.getChildren().add(IntakegridPane);   	
         return NurseView;
     }
-
     
 	//register an account for the patient
 	private void savePatientInfo() {
@@ -253,6 +269,8 @@ public class NurseView{
 		// //get Patients' info
 		String firstName = TxFirstName.getText();
         String lastName = TxlastName.getText();
+        String gender = TxGender.getText();
+        String pharmacy = TxPharmacy.getText();
         String birthday = TxBirthday.getText();
         String email = TxEmail.getText();
         String phoneNumber = TxPhoneNumber.getText();
@@ -277,10 +295,12 @@ public class NurseView{
         	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt", true);
             writer.write("First Name: " + firstName + "\n");
             writer.write("Last Name: " + lastName + "\n");
+            writer.write("Gender: " + gender + "\n");
             writer.write("Birthday: " + birthday + "\n");
             writer.write("Email: " + email + "\n");
             writer.write("Phone Number: " + phoneNumber + "\n");
             writer.write("Insurance ID: " + insuranceID + "\n");
+            writer.write("Pharmacy: " + pharmacy + "\n");
             writer.write("\nVitals " + "\n");
             writer.close();
         	} 
