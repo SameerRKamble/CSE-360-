@@ -5,6 +5,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.io.*;
 import javafx.geometry.*;
+import javafx.scene.text.Font;
 
 public class PatientView {
 
@@ -15,6 +16,7 @@ public class PatientView {
     private Button submitButton;       // Button to submit patient ID
     private VBox inputLayout; 
     private VBox PatientView;
+	private Label enterPatientID;
 
     private boolean isHistory = false;
 	String PATIENTID;
@@ -29,20 +31,27 @@ public class PatientView {
     }
 
     private void initializeInputUI() {
+    	// Enter Patient ID Label
+    	enterPatientID = new Label("Enter Patient ID:");
+    	enterPatientID.setFont(new Font("Arial", 20));
+
         // Patient ID input section   
         patientIdInput = new TextField();
         patientIdInput.setPromptText("Enter Patient ID");
         
         //button part
         submitButton = new Button("Load Patient Data");
+	    submitButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+	    submitButton.setPrefWidth(150);
+	    submitButton.setPrefHeight(40);
         submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
 
         inputLayout = new VBox(20);
         inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton);
+        inputLayout.getChildren().addAll(enterPatientID, patientIdInput, submitButton);
         PatientView = inputLayout;
     }
-
+	
     private void initializeUI() {
         root = new BorderPane();
         root.setPrefSize(400, 600);
