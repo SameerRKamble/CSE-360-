@@ -325,7 +325,7 @@ public class NurseView{
         String Bloodpressure = TxBloodPressure.getText();
         String KnownAllergies = TxKnownAllergies.getText();
         String HealthConcern = TxHealthConcern.getText();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDate today = LocalDate.now();
         String formattedDate = dtf.format(today);
     
