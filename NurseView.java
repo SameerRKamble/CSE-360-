@@ -42,6 +42,7 @@ public class NurseView{
     private Label LHeight;
     private Label LTemperature;
     private Label LBloodPressure;
+    private Label date;
     private TextArea TxKnownAllergies;
     private TextArea TxHealthConcern;
     private TextArea TxPastHistory;
@@ -49,6 +50,7 @@ public class NurseView{
     private TextArea TxHeight;
     private TextArea TxTemperature;
     private TextArea TxBloodPressure;
+    private TextArea TxDate;
     private Button btnViewPastHistory;
     private Button btnSaveVital;
     private Label RecordPatientVital;
@@ -59,8 +61,9 @@ public class NurseView{
 	private GridPane RecordVital;
 
     private String PATIENTID;
-
-    boolean isHistory = false;
+    private boolean isHistory = false;
+    
+   
 	 
 	public NurseView(PediatircAutoSystem mainApp) {
 		this.mainApp = mainApp;
@@ -97,6 +100,8 @@ public class NurseView{
 	    LHeight = new Label("Height:");
 	    LTemperature = new Label("Body Temperature:");
 	    LBloodPressure = new Label("Blood Pressure:");
+        date = new Label("Date(MM/DD/YY)");
+        TxDate = new TextArea();
 	    TxKnownAllergies = new TextArea();
 	    TxHealthConcern = new TextArea();
 	    TxWeight = new TextArea();
@@ -116,6 +121,8 @@ public class NurseView{
 	    TxHeight.setPrefHeight(50);
 	    TxTemperature.setPrefWidth(400);
 	    TxTemperature.setPrefHeight(50);
+        TxDate.setPrefWidth(400);
+        TxDate.setPrefHeight(50);
 	    
 	    //button
 	    btnViewPastHistory = new Button("View Past History");
@@ -126,9 +133,10 @@ public class NurseView{
 	    btnSaveVital.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 	    btnSaveVital.setPrefWidth(150);
 	    btnSaveVital.setPrefHeight(50);
+
         // Attach event handlers to buttons
 	    btnSaveVital.setOnAction(e -> savePatientVitals());
-	    btnViewPastHistory.setOnAction(e -> mainApp.openHistory(isHistory));
+	    btnViewPastHistory.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
 	    Button goBackButton = new Button("Go Back");
 	    goBackButton.setPrefWidth(150);
 	    goBackButton.setPrefHeight(50);
@@ -140,21 +148,23 @@ public class NurseView{
 	    RecordVital.setVgap(30);
 	    RecordVital.setPadding(new Insets(50));
 	    RecordVital.add(RecordPatientVital, 1, 0);
-	    RecordVital.add(LWeight, 0, 1);
-	    RecordVital.add(LHeight, 0, 2);
-	    RecordVital.add(LTemperature, 0, 3);
-	    RecordVital.add(LBloodPressure, 0, 4);
-	    RecordVital.add(LKnownAllergies, 0, 5);
-	    RecordVital.add(LHealthConcern, 0, 6);
-	    RecordVital.add(TxWeight, 1, 1);
-	    RecordVital.add(TxHeight, 1, 2);
-	    RecordVital.add(TxTemperature, 1, 3);
-	    RecordVital.add(TxBloodPressure, 1, 4);
-	    RecordVital.add(TxKnownAllergies, 1, 5);
-	    RecordVital.add(TxHealthConcern, 1, 6);
-	    RecordVital.add(btnSaveVital, 2, 7);
-	    RecordVital.add(btnViewPastHistory, 1, 7);
-	    RecordVital.add(goBackButton, 0, 7);
+        RecordVital.add(date, 0, 1);
+        RecordVital.add(TxDate, 1, 1);
+        RecordVital.add(LWeight, 0, 2);
+        RecordVital.add(LHeight, 0, 3);
+        RecordVital.add(LTemperature, 0, 4);
+        RecordVital.add(LBloodPressure, 0, 5);
+        RecordVital.add(LKnownAllergies, 0, 6);
+        RecordVital.add(LHealthConcern, 0, 7);
+        RecordVital.add(TxWeight, 1, 2);
+        RecordVital.add(TxHeight, 1, 3);
+        RecordVital.add(TxTemperature, 1, 4);
+        RecordVital.add(TxBloodPressure, 1, 5);
+        RecordVital.add(TxKnownAllergies, 1, 6);
+        RecordVital.add(TxHealthConcern, 1, 7);
+        RecordVital.add(btnSaveVital, 2, 8);
+        RecordVital.add(btnViewPastHistory, 1, 8);
+        RecordVital.add(goBackButton, 0, 8);
 	   
     }
 	
@@ -235,19 +245,6 @@ public class NurseView{
         return NurseView;
     }
 
-    // private String getID()
-    // {
-    //     // String firstName = TxFirstName.getText();
-    //     // String lastName = TxlastName.getText();
-    //     // String birthday = TxBirthday.getText();
-    //     // String email = TxEmail.getText();
-    //     // String phoneNumber = TxPhoneNumber.getText();
-    //     // String insuranceID = TxInsuranceID.getText();
-        
-    //     //Generate Patient's unique ID
-    //     String patientID = generatePatientID();
-    //     return patientID;
-    // }
     
 	//register an account for the patient
 	private void savePatientInfo() {
@@ -266,6 +263,16 @@ public class NurseView{
         String patientID = generatePatientID(firstName, lastName, birthday);
         PATIENTID = patientID;
         System.out.println("Generated Patient ID: " + patientID);
+
+        try {
+        	FileWriter writer = new FileWriter("IDs.txt", true);
+            writer.write(patientID + "\n");
+            writer.close();
+        	} 
+        catch (IOException e) {
+            e.printStackTrace();
+          	}
+
         //write in a file
         try {
         	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt", true);
@@ -275,6 +282,7 @@ public class NurseView{
             writer.write("Email: " + email + "\n");
             writer.write("Phone Number: " + phoneNumber + "\n");
             writer.write("Insurance ID: " + insuranceID + "\n");
+            writer.write("\nVitals " + "\n");
             writer.close();
         	} 
         catch (IOException e) {
@@ -288,51 +296,59 @@ public class NurseView{
      }
 	
 	//save patient vitals
-	private void savePatientVitals() {
-		
-
-        //String patientID = generatePatientID();
-		//get Patients' vital
-		String Weight = TxWeight.getText();
+    private void savePatientVitals() {
+        // Get Patients' vital
+        String Weight = TxWeight.getText();
         String Height = TxHeight.getText();
         String Temperature = TxTemperature.getText();
         String Bloodpressure = TxBloodPressure.getText();
         String KnownAllergies = TxKnownAllergies.getText();
         String HealthConcern = TxHealthConcern.getText();
+        String tDate = TxDate.getText();
+    
+        String fileName = PATIENTID + "_PatientInfo.txt";
+        StringBuilder fileContent = new StringBuilder();
+
+        // Append the new content to the file
+        fileContent.append("\nVisit "+ tDate + "\n");
+        //fileContent.append("Patient Vitals:\n");
+        fileContent.append("Weight: ").append(Weight).append("\n");
+        fileContent.append("Height: ").append(Height).append("\n");
+        fileContent.append("Body Temperature: ").append(Temperature).append("\n");
+        fileContent.append("Blood Pressure: ").append(Bloodpressure).append("\n");
+        fileContent.append("Known Allergies: ").append(KnownAllergies).append("\n");
+        fileContent.append("Health Concern: ").append(HealthConcern).append("\n");
         
-        //write in a file
-        try {
-        	FileWriter writer = new FileWriter( PATIENTID + "_PatientInfo.txt",true);
-            writer.write("Patient Vitals:\n");
-            writer.write("Weight: " + Weight + "\n");
-            writer.write("Height: " + Height + "\n");
-            writer.write("Body Temperature: " + Temperature + "\n");
-            writer.write("Blood Pressure: " + Bloodpressure + "\n");
-            writer.write("Known Allergies: " + KnownAllergies + "\n");
-            writer.write("Health Concern: " + HealthConcern + "\n");
-            writer.close();
-        	} 
-        catch (IOException e) {
+    
+        // Write the file content back to the file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            writer.write(fileContent.toString());
+        } catch (IOException e) {
             e.printStackTrace();
-          	}
-     }
+        }
+    
+        mainApp.showMainMenu();
+    }
+    
 	
 	
     private void loadPatientData(String patientID) {
         
-    	// Validate patient ID and load data
-        if (patientID == null) {
-            showAlert("No patient ID input.");
-            return;
-        }
-        //if the id cannot found or not register
-        if (!patientID.matches("\\d{5}")) {
-            showAlert("Haven't registered yet.");
-            return;
-        }
+        isHistory = mainApp.existsPatientID(patientID);
+        PATIENTID = patientID;
+
         //if the id exists, then go to the record vital page 
-        NurseView.getChildren().clear();
-    	NurseView.getChildren().add(RecordVital);   	
+        if (isHistory) 
+        {
+            NurseView.getChildren().clear();
+            NurseView.getChildren().add(RecordVital);  
+        }
+        else
+        {
+            showAlert("Patient ID not Found");
+        }
+
+ 	
     }
     
     // Utility method to show an alert dialog
@@ -347,14 +363,14 @@ public class NurseView{
 	private String generatePatientID(String firstName, String lastName, String birthday) {
         String patientID;
         do {
-        	//get Patients' info
-    		// String firstName = TxFirstName.getText();
-            // String lastName = TxlastName.getText();
-            // String birthday = TxBirthday.getText();
             // Extract the initial of the first name
             char firstInitial = firstName.charAt(0);
             // Extract month and day from the birthday
             String[] parts = birthday.split("/");
+            if (parts.length < 3) {
+                // Handle invalid DOB format here, e.g., throw an exception or return a default value
+                showAlert("Wrong format of DOB");
+            }
             String month = parts[1]; // The month is the second element
             String day = parts[2];   // The day is the third element
 
