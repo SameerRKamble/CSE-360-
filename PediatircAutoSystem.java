@@ -2,409 +2,297 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.io.*;
-import java.util.*;
-
 import javafx.geometry.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.io.*;
 
-public class NurseView{
+public class PediatircAutoSystem extends Application {
 	
-	//patientIntake
-	private Label LfirstName;
-	private Label LlastName;
-	private Label LBirthday;
-	private Label LEmail;
-	private Label LPhoneNumber;
-	private Label LInsuranceID;
-	private Label PatientIntake;
-	private TextArea TxFirstName;
-	private TextArea TxlastName;
-	private TextArea TxBirthday;
-	private TextArea TxEmail;
-	private TextArea TxPhoneNumber;
-	private TextArea TxInsuranceID;
-	private Button btnSave;
+    private NurseView NurseView;
+    private DoctorView DoctorView;
+    private PatientView PatientView;
 	
-	private Label enterPatientID;
-	private TextField patientIdInput;  // TextField for patient ID input
-    private Button submitButton;       // Button to submit patient ID
-    private Button btnRegister;
-    private VBox inputLayout; 
-    private VBox NurseView;
-	
-    //health concern layout
-    private Label LKnownAllergies;
-    private Label LHealthConcern;
-    private Label LPastHistory;
-    private Label LWeight;
-    private Label LHeight;
-    private Label LTemperature;
-    private Label LBloodPressure;
-    private Label LDate;
-    private Label LGender;
-    private Label LPharmacy;
-    private TextArea TxKnownAllergies;
-    private TextArea TxHealthConcern;
-    private TextArea TxPastHistory;
-    private TextArea TxWeight;
-    private TextArea TxHeight;
-    private TextArea TxTemperature;
-    private TextArea TxBloodPressure;
-    private TextArea TxDate;
-    private TextArea TxGender;
-    private TextArea TxPharmacy;
-    private Button btnViewPastHistory;
-    private Button btnSaveVital;
-    private Button btnSendMessage;
-    private Label RecordPatientVital;
+	// UI Components
+	//main
+    private Button btnNurseView;
+    private Button btnDoctorView;
+    private Button btnpatientView;
+    private Label MainTitle;
+    private Scene mainScene; 
+    private Stage primaryStage;
+
+	private Button viewPastButton;
+    private Label LDoctorNotes;
+    private Label LPersonalInformation;
+
+    private TextArea TxDoctorNotes;
+    private TextArea TxPersonalInformation;
+
+	BorderPane borderPane;
+	VBox leftVBox;
+	ScrollPane personalInfoScrollPane;
+	VBox rightVBox;
+	ScrollPane doctorNotesScrollPane;
+	HBox centerHBox;
+	VBox bottomVBox;
+
+
+	Button goBackButton;
+
+
+
+
+	boolean patientExists = false;
+
     
-	//layout
-	private GridPane IntakegridPane;
-	private PediatircAutoSystem mainApp;
-	private GridPane RecordVital;
-
-    private String PATIENTID;
-    private boolean isHistory = false;
-    
-	public NurseView(PediatircAutoSystem mainApp) {
-		this.mainApp = mainApp;
-		initializeInputUI(); //check ID first
-        initializeUI();//register only if the id not found
-        initializeHealthUI();//record vitals
-    }
-	
-	//check id first
-	private void initializeInputUI() {
-		// Enter Patient ID Label
-		enterPatientID = new Label("Enter Patient ID:");
-		enterPatientID.setFont(new Font("Arial", 20));
+	// Scene and Stage
+	public void start(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+		//Main UI
+		MainTitle = new Label("Welcome to Pediatric Doctor’s Office Automation System");
+		btnNurseView = new Button("Nurse View");
+		btnDoctorView = new Button("Doctor View");
+		btnpatientView = new Button("Patient View");
+        
+		//set button size
+		btnNurseView.setPrefWidth(200);
+		btnNurseView.setPrefHeight(80);
+		btnDoctorView.setPrefWidth(200);
+		btnDoctorView.setPrefHeight(80);
+		btnpatientView.setPrefWidth(200);
+		btnpatientView.setPrefHeight(80);
 		
-        // Patient ID input section   
-        patientIdInput = new TextField();
-        patientIdInput.setPromptText("Enter Patient ID");
-        
-        //button part
-        submitButton = new Button("Load Patient Data");
-	    submitButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    submitButton.setPrefWidth(150);
-	    submitButton.setPrefHeight(50);
-        submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
-        btnRegister = new Button("Register new account");
-	    btnRegister.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    btnRegister.setPrefWidth(150);
-	    btnRegister.setPrefHeight(50);
-        btnRegister.setOnAction(event -> getRegister());
-        
-        // Back Button
-        Button goBackButton = new Button("Go Back");
-	    goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    goBackButton.setPrefWidth(150);
-	    goBackButton.setPrefHeight(50);
-        goBackButton.setOnAction(e -> mainApp.showMainMenu());
-
-        inputLayout = new VBox(20);
-        inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.getChildren().addAll(enterPatientID, patientIdInput, submitButton, btnRegister, goBackButton);
-        NurseView = inputLayout;
-    }
-	
-	//health concern part
-	private void initializeHealthUI() {
-		//UI components
-		LKnownAllergies = new Label("Known Allergies:");
-		LHealthConcern = new Label("Health Concern:");
-	    LWeight = new Label("Weight:");
-	    LHeight = new Label("Height:");
-	    LTemperature = new Label("Body Temperature:");
-	    LBloodPressure = new Label("Blood Pressure:");
-	    TxKnownAllergies = new TextArea();
-	    TxHealthConcern = new TextArea();
-	    TxWeight = new TextArea();
-	    TxHeight = new TextArea();
-	    TxTemperature = new TextArea();
-	    TxBloodPressure = new TextArea();
-	    RecordPatientVital = new Label("Record Patient Vitals");
-	    TxKnownAllergies.setPrefWidth(400);
-	    TxKnownAllergies.setPrefHeight(50);
-	    TxWeight.setPrefWidth(400);
-	    TxWeight.setPrefHeight(50);
-	    TxBloodPressure.setPrefWidth(400);
-	    TxBloodPressure.setPrefHeight(50);
-	    TxHealthConcern.setPrefWidth(400);
-	    TxHealthConcern.setPrefHeight(50);
-	    TxHeight.setPrefWidth(400);
-	    TxHeight.setPrefHeight(50);
-	    TxTemperature.setPrefWidth(400);
-	    TxTemperature.setPrefHeight(50);
-	    
-	    //button
-	    btnViewPastHistory = new Button("View Past History");
-	    btnSaveVital = new Button("Save");
-	    btnViewPastHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    btnViewPastHistory.setPrefWidth(200);
-	    btnViewPastHistory.setPrefHeight(50);
-	    btnSaveVital.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-	    btnSaveVital.setPrefWidth(150);
-	    btnSaveVital.setPrefHeight(50);
-
-        // Attach event handlers to buttons
-	    btnSaveVital.setOnAction(e -> savePatientVitals());
-	    btnViewPastHistory.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
-	    Button goBackButton = new Button("Go Back");
-	    goBackButton.setPrefWidth(150);
-	    goBackButton.setPrefHeight(50);
-        goBackButton.setOnAction(e -> mainApp.showMainMenu());
-	    
-	    //layout
-	    RecordVital = new GridPane();
-	    RecordVital.setHgap(30);
-	    RecordVital.setVgap(30);
-	    RecordVital.setPadding(new Insets(50));
-	    RecordVital.add(RecordPatientVital, 1, 0);
-        RecordVital.add(LWeight, 0, 1);
-        RecordVital.add(LHeight, 0, 2);
-        RecordVital.add(LTemperature, 0, 3);
-        RecordVital.add(LBloodPressure, 0, 4);
-        RecordVital.add(LKnownAllergies, 0, 5);
-        RecordVital.add(LHealthConcern, 0, 6);
-        RecordVital.add(TxWeight, 1, 1);
-        RecordVital.add(TxHeight, 1, 2);
-        RecordVital.add(TxTemperature, 1, 3);
-        RecordVital.add(TxBloodPressure, 1, 4);
-        RecordVital.add(TxKnownAllergies, 1, 5);
-        RecordVital.add(TxHealthConcern, 1, 6);
-        RecordVital.add(btnSaveVital, 2, 7);
-        RecordVital.add(btnViewPastHistory, 1, 7);
-        RecordVital.add(goBackButton, 0, 7);
-    }
-	
-	private void initializeUI() {
-		//Label
-		LfirstName = new Label("First Name:");
-		LlastName = new Label("Last Name:");
-		LBirthday = new Label("Birthday (YY/MM/DD)");
-		LEmail = new Label("Email:");
-		LPhoneNumber = new Label("Phone Number:");
-		LInsuranceID = new Label("Insurance ID:");
-		PatientIntake = new Label("Patient Intake Form");
-        LGender = new Label("Gender(M/F)");
-        LPharmacy = new Label("Pharmacy");
-
-        btnSendMessage = new Button("Send Message");
-
-		//Text Area
-		TxFirstName = new TextArea();
-        TxlastName = new TextArea();
-        TxBirthday = new TextArea();
-        TxEmail = new TextArea();
-        TxPhoneNumber = new TextArea();
-        TxInsuranceID = new TextArea();
-        TxGender = new TextArea();
-        TxPharmacy = new TextArea();
-        TxFirstName.setPrefWidth(400);
-        TxFirstName.setPrefHeight(50);
-        TxlastName.setPrefWidth(400);
-        TxlastName.setPrefHeight(50);
-        TxBirthday.setPrefWidth(400);
-        TxBirthday.setPrefHeight(50);
-        TxEmail.setPrefWidth(400);
-        TxEmail.setPrefHeight(50);
-        TxPhoneNumber.setPrefWidth(400);
-        TxPhoneNumber.setPrefHeight(50);
-        TxInsuranceID.setPrefWidth(400);
-        TxInsuranceID.setPrefHeight(50);
-        TxGender.setPrefWidth(400);
-        TxGender.setPrefHeight(50);
-        TxPharmacy.setPrefWidth(400);
-        TxPharmacy.setPrefHeight(50);
-       
-        //Button
-        btnSave = new Button("Save");
-        btnSave.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-        btnSave.setPrefWidth(100);
-		btnSave.setPrefHeight(50);
-        // Attach event handlers to buttons
-        btnSave.setOnAction(e -> savePatientInfo());
- 
-        //Layout
-        IntakegridPane = new GridPane();
-        IntakegridPane.setHgap(30);
-        IntakegridPane.setVgap(30);
-        IntakegridPane.setPadding(new Insets(50));
-        IntakegridPane.add(PatientIntake, 1, 0);
-        IntakegridPane.add(LfirstName, 0, 1);
-        IntakegridPane.add(LlastName, 0, 2);
-        IntakegridPane.add(LGender, 0, 3);
-        IntakegridPane.add(LBirthday, 0, 4);
-        IntakegridPane.add(LEmail, 0, 5);
-        IntakegridPane.add(LPhoneNumber, 0, 6);
-        IntakegridPane.add(LInsuranceID, 0, 7);
-        IntakegridPane.add(LPharmacy, 0, 8);
-        IntakegridPane.add(TxFirstName, 1, 1);
-        IntakegridPane.add(TxlastName, 1, 2);
-        IntakegridPane.add(TxGender, 1 , 3);
-        IntakegridPane.add(TxBirthday, 1, 4);
-        IntakegridPane.add(TxEmail, 1, 5);
-        IntakegridPane.add(TxPhoneNumber, 1, 6);
-        IntakegridPane.add(TxInsuranceID, 1, 7);
-        IntakegridPane.add(TxPharmacy, 1, 8);
-        IntakegridPane.add(btnSendMessage, 1, 9);
-        IntakegridPane.add(btnSave, 2, 9);
-
-        btnSendMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID, "Nurse: "));
-        
-        Button goBackButton = new Button("Go Back");
-        goBackButton.setOnAction(e -> mainApp.showMainMenu());
-        IntakegridPane.add(goBackButton, 0, 9);
+		//set button color
+		btnNurseView.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		btnDoctorView.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		btnpatientView.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+		// Attach event handlers to buttons
+		btnNurseView.setOnAction(event -> openNurseView(primaryStage));
+		btnDoctorView.setOnAction(event -> openDoctorView(primaryStage));
+		btnpatientView.setOnAction(event -> openPatientView(primaryStage));
+		VBox buttonSection = new VBox(20, btnNurseView, btnDoctorView, btnpatientView);
+		buttonSection.setAlignment(Pos.CENTER);
+		MainTitle.setAlignment(Pos.CENTER);
 		
+		//Layout
+		VBox mainLayout = new VBox(50,MainTitle,buttonSection);
+		// Set padding around the edges (top, right, bottom, left)
+		mainLayout.setPadding(new Insets(70, 150, 100, 120)); 
+        
+        // Scene and Stage
+        mainScene = new Scene(mainLayout, 600, 400);
+        primaryStage.setScene(mainScene);
+        primaryStage.show();
+	}
+	
+	private void openNurseView(Stage stage) {
+		NurseView NurseView = new NurseView(this);
+        Scene scene = new Scene(NurseView.getRoot(), 800, 650);
+        stage.setScene(scene);
+		stage.show();
+    }
+
+    private void openDoctorView(Stage stage) {
+    	DoctorView DoctorView = new DoctorView(this);
+		 Scene scene = new Scene(DoctorView.getRoot(), 700, 500);
+		 stage.setScene(scene);
+		 stage.show();
+    }
+
+    private void openPatientView(Stage stage) {
+        PatientView patientView = new PatientView(this);
+        Scene scene = new Scene(patientView.getRoot(), 800, 600);
+        stage.setScene(scene);
+		stage.show();
+    }
+
+	public void accessHistoryFile(String patientID) {
+		String ID = patientID;
+		String notes = "";
+		String pp = "";
+		
+		String notesFile = patientID + "_Notes.txt";
+		
+		//read from notes file
+		try (BufferedReader reader = new BufferedReader(new FileReader(notesFile))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				notes = notes + line + "\n";
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		//read from patient file
+		try (BufferedReader reader = new BufferedReader(new FileReader(patientID + "_PatientInfo.txt"))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				pp = pp + line + "\n";
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Show the history UI
+		showHistoryUI(notes, pp);
 	}
 
-
-	 //get root for the main button to use
-    public VBox getRoot() {
-        return NurseView;
-    }
-    
-    public VBox getRegister() {
-    	NurseView.getChildren().clear();
-    	NurseView.getChildren().add(IntakegridPane);   	
-        return NurseView;
-    }
-    
-	//register an account for the patient
-	private void savePatientInfo() {
-		// //get Patients' info
-		String firstName = TxFirstName.getText();
-        String lastName = TxlastName.getText();
-        String gender = TxGender.getText();
-        String pharmacy = TxPharmacy.getText();
-        String birthday = TxBirthday.getText();
-        String email = TxEmail.getText();
-        String phoneNumber = TxPhoneNumber.getText();
-        String insuranceID = TxInsuranceID.getText();
-        
-        //Generate Patient's unique ID
-        String patientID = generatePatientID(firstName, lastName, birthday);
-        PATIENTID = patientID;
-        System.out.println("Generated Patient ID: " + patientID);
-
-        try {
-        	FileWriter writer = new FileWriter("IDs.txt", true);
-            writer.write(patientID + "\n");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //write in a file
-        try {
-        	FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt", true);
-            writer.write("First Name: " + firstName + "\n");
-            writer.write("Last Name: " + lastName + "\n");
-            writer.write("Gender: " + gender + "\n");
-            writer.write("Birthday: " + birthday + "\n");
-            writer.write("Email: " + email + "\n");
-            writer.write("Phone Number: " + phoneNumber + "\n");
-            writer.write("Insurance ID: " + insuranceID + "\n");
-            writer.write("Pharmacy: " + pharmacy + "\n");
-            writer.write("\nVitals " + "\n");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        //once nurse saves, it will lead to record vitals page
-        NurseView.getChildren().clear();
-    	NurseView.getChildren().add(RecordVital); 
-        //return patientID;  	
-     }
+	private void showHistoryUI(String notes, String pp) {
+		LDoctorNotes = new Label("Doctor's notes:");
+		LPersonalInformation = new Label("Patient Information:");
+		TxDoctorNotes = new TextArea(notes);
+		TxPersonalInformation = new TextArea(pp);
 	
-	//save patient vitals
-    private void savePatientVitals() {
-        // Get Patients' vital
-        String Weight = TxWeight.getText();
-        String Height = TxHeight.getText();
-        String Temperature = TxTemperature.getText();
-        String Bloodpressure = TxBloodPressure.getText();
-        String KnownAllergies = TxKnownAllergies.getText();
-        String HealthConcern = TxHealthConcern.getText();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDate today = LocalDate.now();
-        String formattedDate = dtf.format(today);
-    
-        String fileName = PATIENTID + "_PatientInfo.txt";
-        StringBuilder fileContent = new StringBuilder();
-
-        // Append the new content to the file
-        fileContent.append("\nVisit Date(YYYY/MM/DD) "+ formattedDate + "\n");
-        //fileContent.append("Patient Vitals:\n");
-        fileContent.append("Weight: ").append(Weight).append("\n");
-        fileContent.append("Height: ").append(Height).append("\n");
-        fileContent.append("Body Temperature: ").append(Temperature).append("\n");
-        fileContent.append("Blood Pressure: ").append(Bloodpressure).append("\n");
-        fileContent.append("Known Allergies: ").append(KnownAllergies).append("\n");
-        fileContent.append("Health Concern: ").append(HealthConcern).append("\n");
-        
-    
-        // Write the file content back to the file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-            writer.write(fileContent.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    
-        mainApp.showMainMenu();
-    }
-    
+		borderPane = new BorderPane();
 	
+		// Create left VBox
+		leftVBox = new VBox();
+		leftVBox.setPadding(new Insets(10));
+		leftVBox.setAlignment(Pos.CENTER_LEFT);
+		leftVBox.getChildren().add(LPersonalInformation);
 	
-    private void loadPatientData(String patientID) {
-        
-        isHistory = mainApp.existsPatientID(patientID);
-        PATIENTID = patientID;
+		// Wrap the TextArea in a ScrollPane
+		personalInfoScrollPane = new ScrollPane(TxPersonalInformation);
+		personalInfoScrollPane.setFitToWidth(true);
+		personalInfoScrollPane.setFitToHeight(true);
+		personalInfoScrollPane.setPrefViewportHeight(200); // Set preferred height
+		leftVBox.getChildren().add(personalInfoScrollPane);
+	
+		// Create right VBox
+		rightVBox = new VBox();
+		rightVBox.setPadding(new Insets(10));
+		rightVBox.setAlignment(Pos.CENTER_RIGHT);
+		rightVBox.getChildren().add(LDoctorNotes);
+	
+		// Wrap the TextArea in a ScrollPane
+		doctorNotesScrollPane = new ScrollPane(TxDoctorNotes);
+		doctorNotesScrollPane.setFitToWidth(true);
+		doctorNotesScrollPane.setFitToHeight(true);
+		doctorNotesScrollPane.setPrefViewportHeight(200); // Set preferred height
+		rightVBox.getChildren().add(doctorNotesScrollPane);
+	
+		// Create a center HBox and add the left and right VBoxes to it
+		centerHBox = new HBox(leftVBox, rightVBox);
+		centerHBox.setAlignment(Pos.CENTER);
+	
+		// Set the center HBox in the BorderPane
+		borderPane.setCenter(centerHBox);
+	
+		// Create a VBox for the "Go Back" button
+		bottomVBox = new VBox();
+		bottomVBox.setAlignment(Pos.CENTER);
+		bottomVBox.setPadding(new Insets(10));
+	
+		goBackButton = new Button("Go Back");
+		borderPane.setBottom(bottomVBox);
+		goBackButton.setOnAction(e -> showMainMenu());
+	
+		bottomVBox.getChildren().add(goBackButton);
+	
+		// Show the scene
+		Scene historyScene = new Scene(borderPane, 800, 600);
+		primaryStage.setScene(historyScene);
+		primaryStage.show();
+	}
+	
 
-        //if the id exists, then go to the record vital page 
-        if (isHistory) {
-            NurseView.getChildren().clear();
-            NurseView.getChildren().add(RecordVital);  
-        } else {
-            showAlert("Patient ID not Found");
-        }
+	public boolean existsPatientID(String searchString) {
+		patientExists = false; // Initialize patientExists to false
+		try (BufferedReader reader = new BufferedReader(new FileReader("IDs.txt"))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals(searchString)) {
+					patientExists = true; // Set patientExists to true if string is found
+					break; // Exit the loop once string is found
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace(); // Handle file reading exception
+		}
+		//System.out.println(patientExists); // Print the value of patientExists
+		return patientExists;
+	}
 
- 	
-    }
+	public void sendMessage(String patientID, String who) {
+		
+		String fileName = patientID + "_Messages.txt";
+		File file = new File(fileName);
+
+		TextArea textArea = new TextArea();
+		textArea.setPrefRowCount(10);
+		textArea.setEditable(false);
+	
+		if (file.exists()) {
+			// Read and display existing messages from the file
+			readMessagesFromFile(file, textArea);
+		}
+
+		
+		Button addButton = new Button("Send");
+		TextField txMessage = new TextField();
+		addButton.setOnAction(e -> {
+			String newContent = txMessage.getText();
+			if (!newContent.isEmpty()) {
+				try (FileWriter writer = new FileWriter(file, true)) {
+					writer.write(who + newContent + "\n");
+					textArea.appendText(who + newContent + "\n"); // Append the new message to the TextArea
+					txMessage.clear(); // Clear the input field after sending
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					showAlert("Failed to send message");
+				}
+			} else {
+				showAlert("Please enter some message!");
+			}
+		});
+
+		VBox vbox = new VBox(10);
+		vbox.setPadding(new Insets(10));
+		vbox.getChildren().addAll(new Label("Message Box:"), textArea, txMessage, addButton);
+
+		Stage popupStage = new Stage();
+		popupStage.setTitle("Message Viewer");
+		popupStage.setScene(new Scene(vbox, 400, 300));
+		popupStage.show();
+	}
+	
+	private void readMessagesFromFile(File file, TextArea textArea) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+			StringBuilder existingMessages = new StringBuilder();
+	
+			while ((line = reader.readLine()) != null) {
+				existingMessages.append(line).append("\n");
+			}
+	
+			reader.close();
+			textArea.setText(existingMessages.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			showAlert("Failed to read messages from file!");
+		}
+	}
+	
+	private void showAlert(String message) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Information");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
+	
     
-    // Utility method to show an alert dialog
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-	
-	private String generatePatientID(String firstName, String lastName, String birthday) {
-        String patientID;
-        do {
-            // Extract the initial of the first name
-            char firstInitial = firstName.charAt(0);
-            // Extract month and day from the birthday
-            String[] parts = birthday.split("/");
-            if (parts.length < 3) {
-                // Handle invalid DOB format here, e.g., throw an exception or return a default value
-                showAlert("Wrong format of DOB");
-            }
-            String month = parts[1]; // The month is the second element
-            String day = parts[2];   // The day is the third element
+    public void showMainMenu() {
+    	primaryStage.setScene(mainScene); // Reuse the main scene
+        primaryStage.show();
+	}
 
-            patientID = firstInitial + lastName + month + day;;
-        } while (new File(patientID + "_PatientInfo.txt").exists());
-        return patientID;
-    }
+	
+	// Main method to launch the application
+	 public static void main(String[] args) {
+	     launch(args);
+	 }
+	
 }
