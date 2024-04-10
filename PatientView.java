@@ -53,14 +53,13 @@ public class PatientView {
 
         messageInput = new TextField();
         messageInput.setPromptText("Type your message...");
-        messageInput.setPrefWidth(280); // Adjust width as needed
+        
 
         Button sendMessageButton = new Button("Send");
-        sendMessageButton.setPrefSize(80, 40); // Make button larger
-        sendMessageButton.setOnAction(e -> sendMessage(messageInput.getText()));
+        sendMessageButton.setOnAction(e -> loadMessageFromFile(PATIENTID, messageInput.getText()));
 
         Button changeInfoButton = new Button("Change Info");
-        //changeInfoButton.setOnAction(e -> System.out.println("Change Info button clicked."));
+        changeInfoButton.setOnAction(e -> changeInfo(PATIENTID));
 
         Button viewHistoryButton = new Button("View History");
         viewHistoryButton.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
@@ -78,6 +77,52 @@ public class PatientView {
         root.setBottom(messageBox);
         root.setRight(buttonBar);
     }
+
+    private void changeInfo(String patientID) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(patientID + "_PatientInfo.txt"))) {
+            StringBuilder fileContent = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Email:")) {
+                    String newEmail = showInputDialog("Enter new email:");
+                    fileContent.append("Email: ").append(newEmail).append("\n");
+                } else if (line.startsWith("Phone Number:")) {
+                    String newPhoneNumber = showInputDialog("Enter new phone number:");
+                    fileContent.append("Phone Number: ").append(newPhoneNumber).append("\n");
+                } else {
+                    fileContent.append(line).append("\n");
+                }
+            }
+
+            try (FileWriter writer = new FileWriter(patientID + "_PatientInfo.txt")) {
+                writer.write(fileContent.toString());
+                showAlert("Info updated successfully!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Failed to update info!");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String showInputDialog(String message) {
+        TextField textField = new TextField();
+        Label label = new Label(message);
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20, 20, 20, 20));
+        grid.add(label, 0, 0);
+        grid.add(textField, 1, 0);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getDialogPane().setContent(grid);
+        alert.showAndWait();
+
+        return textField.getText();
+    }
+
 
     private void loadPatientData(String patientID) {
         
@@ -109,10 +154,28 @@ public class PatientView {
         alert.showAndWait();
     }
 
+    private void loadMessageFromFile(String patientID, String message) {
+        String fileName = patientID + "_Messages.txt";
+        File file = new File(fileName);
+    
+        try {
+            if (!file.exists()) {
+                file.createNewFile(); // Create the file if it doesn't exist
+            }
+    
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true)); // Open the file in append mode
+            writer.write("Patient: " + message + "\n"); // Append the message to the file
+            writer.close();
+            sendMessage(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+            sendMessage("Failed to write message to file!");
+        }
+    }
+
     private void sendMessage(String message) {
         if (!message.isEmpty()) {
             messageArea.appendText(message + "\n");
-            System.out.println("Message sent: " + message);
             // Clear the input after sending
             messageInput.clear();
         }

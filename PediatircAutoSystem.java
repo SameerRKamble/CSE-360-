@@ -213,6 +213,59 @@ public class PediatircAutoSystem extends Application {
 		//System.out.println(patientExists); // Print the value of patientExists
 		return patientExists;
 	}
+
+	public void sendMessage(String patientID) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(patientID + "_Messages.txt"))) {
+            StringBuilder fileContent = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                fileContent.append(line).append("\n");
+            }
+
+            TextArea textArea = new TextArea(fileContent.toString());
+            textArea.setPrefRowCount(10);
+            textArea.setEditable(false);
+
+            Button addButton = new Button("Send");
+			TextField txMessage = new TextField();
+			addButton.setOnAction(e -> {
+				String newContent = txMessage.getText();
+				if (!newContent.isEmpty()) {
+					try (FileWriter writer = new FileWriter(patientID + "_Messages.txt", true)) {
+						writer.write("Doctor:" + newContent + "\n");
+						
+					} catch (IOException ex) {
+						ex.printStackTrace();
+						showAlert("Failed to send message");
+					}
+				} else {
+					showAlert("Please enter some message!");
+				}
+			});
+
+            VBox vbox = new VBox(10);
+            vbox.setPadding(new Insets(10));
+            vbox.getChildren().addAll(new Label("Message Box:"), textArea, txMessage ,addButton);
+
+            Stage popupStage = new Stage();
+            popupStage.setTitle("Message Viewer");
+            popupStage.setScene(new Scene(vbox, 400, 300));
+            popupStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Failed to read file!");
+        }
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 	
     
     public void showMainMenu() {
