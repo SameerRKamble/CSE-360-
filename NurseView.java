@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -30,6 +31,7 @@ public class NurseView{
 	private TextArea TxInsuranceID;
 	private Button btnSave;
 	
+	private Label enterPatientID;
 	private TextField patientIdInput;  // TextField for patient ID input
     private Button submitButton;       // Button to submit patient ID
     private Button btnRegister;
@@ -81,19 +83,36 @@ public class NurseView{
 	
 	//check id first
 	private void initializeInputUI() {
+		// Enter Patient ID Label
+		enterPatientID = new Label("Enter Patient ID:");
+		enterPatientID.setFont(new Font("Arial", 20));
+		
         // Patient ID input section   
         patientIdInput = new TextField();
         patientIdInput.setPromptText("Enter Patient ID");
         
         //button part
         submitButton = new Button("Load Patient Data");
+	    submitButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+	    submitButton.setPrefWidth(150);
+	    submitButton.setPrefHeight(50);
         submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
         btnRegister = new Button("Register new account");
+	    btnRegister.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+	    btnRegister.setPrefWidth(150);
+	    btnRegister.setPrefHeight(50);
         btnRegister.setOnAction(event -> getRegister());
+        
+        // Back Button
+        Button goBackButton = new Button("Go Back");
+	    goBackButton.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
+	    goBackButton.setPrefWidth(150);
+	    goBackButton.setPrefHeight(50);
+        goBackButton.setOnAction(e -> mainApp.showMainMenu());
 
         inputLayout = new VBox(20);
         inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton, btnRegister);
+        inputLayout.getChildren().addAll(enterPatientID, patientIdInput, submitButton, btnRegister, goBackButton);
         NurseView = inputLayout;
     }
 	
@@ -244,7 +263,7 @@ public class NurseView{
         IntakegridPane.add(btnSendMessage, 1, 9);
         IntakegridPane.add(btnSave, 2, 9);
 
-        btnSendMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID,"Nurse: "));
+        btnSendMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID, "Nurse: "));
         
         Button goBackButton = new Button("Go Back");
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
@@ -287,10 +306,9 @@ public class NurseView{
         	FileWriter writer = new FileWriter("IDs.txt", true);
             writer.write(patientID + "\n");
             writer.close();
-        	} 
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-          	}
+        }
 
         //write in a file
         try {
@@ -305,10 +323,9 @@ public class NurseView{
             writer.write("Pharmacy: " + pharmacy + "\n");
             writer.write("\nVitals " + "\n");
             writer.close();
-        	} 
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-          	}
+        }
         
         //once nurse saves, it will lead to record vitals page
         NurseView.getChildren().clear();
@@ -365,9 +382,7 @@ public class NurseView{
         {
             NurseView.getChildren().clear();
             NurseView.getChildren().add(RecordVital);  
-        }
-        else
-        {
+        } else {
             showAlert("Patient ID not Found");
         }
 
