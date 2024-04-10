@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.*;
 
 import javafx.geometry.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class NurseView{
 	
@@ -57,6 +59,7 @@ public class NurseView{
     private TextArea TxPharmacy;
     private Button btnViewPastHistory;
     private Button btnSaveVital;
+    private Button btnSendMessage;
     private Label RecordPatientVital;
     
 	//layout
@@ -104,8 +107,6 @@ public class NurseView{
 	    LHeight = new Label("Height:");
 	    LTemperature = new Label("Body Temperature:");
 	    LBloodPressure = new Label("Blood Pressure:");
-        LDate = new Label("Date(MM/DD/YY)");
-        TxDate = new TextArea();
 	    TxKnownAllergies = new TextArea();
 	    TxHealthConcern = new TextArea();
 	    TxWeight = new TextArea();
@@ -125,8 +126,6 @@ public class NurseView{
 	    TxHeight.setPrefHeight(50);
 	    TxTemperature.setPrefWidth(400);
 	    TxTemperature.setPrefHeight(50);
-        TxDate.setPrefWidth(400);
-        TxDate.setPrefHeight(50);
 	    
 	    //button
 	    btnViewPastHistory = new Button("View Past History");
@@ -152,23 +151,21 @@ public class NurseView{
 	    RecordVital.setVgap(30);
 	    RecordVital.setPadding(new Insets(50));
 	    RecordVital.add(RecordPatientVital, 1, 0);
-        RecordVital.add(LDate, 0, 1);
-        RecordVital.add(LWeight, 0, 2);
-        RecordVital.add(LHeight, 0, 3);
-        RecordVital.add(LTemperature, 0, 4);
-        RecordVital.add(LBloodPressure, 0, 5);
-        RecordVital.add(LKnownAllergies, 0, 6);
-        RecordVital.add(LHealthConcern, 0, 7);
-        RecordVital.add(TxDate, 1, 1);
-        RecordVital.add(TxWeight, 1, 2);
-        RecordVital.add(TxHeight, 1, 3);
-        RecordVital.add(TxTemperature, 1, 4);
-        RecordVital.add(TxBloodPressure, 1, 5);
-        RecordVital.add(TxKnownAllergies, 1, 6);
-        RecordVital.add(TxHealthConcern, 1, 7);
-        RecordVital.add(btnSaveVital, 2, 8);
-        RecordVital.add(btnViewPastHistory, 1, 8);
-        RecordVital.add(goBackButton, 0, 8);
+        RecordVital.add(LWeight, 0, 1);
+        RecordVital.add(LHeight, 0, 2);
+        RecordVital.add(LTemperature, 0, 3);
+        RecordVital.add(LBloodPressure, 0, 4);
+        RecordVital.add(LKnownAllergies, 0, 5);
+        RecordVital.add(LHealthConcern, 0, 6);
+        RecordVital.add(TxWeight, 1, 1);
+        RecordVital.add(TxHeight, 1, 2);
+        RecordVital.add(TxTemperature, 1, 3);
+        RecordVital.add(TxBloodPressure, 1, 4);
+        RecordVital.add(TxKnownAllergies, 1, 5);
+        RecordVital.add(TxHealthConcern, 1, 6);
+        RecordVital.add(btnSaveVital, 2, 7);
+        RecordVital.add(btnViewPastHistory, 1, 7);
+        RecordVital.add(goBackButton, 0, 7);
 	   
     }
 	
@@ -184,6 +181,8 @@ public class NurseView{
 		PatientIntake = new Label("Patient Intake Form");
         LGender = new Label("Gender(M/F)");
         LPharmacy = new Label("Pharmacy");
+
+        btnSendMessage = new Button("Send Message");
 
 		
 		//Text Area
@@ -242,11 +241,14 @@ public class NurseView{
         IntakegridPane.add(TxPhoneNumber, 1, 6);
         IntakegridPane.add(TxInsuranceID, 1, 7);
         IntakegridPane.add(TxPharmacy, 1, 8);
+        IntakegridPane.add(btnSendMessage, 1, 9);
         IntakegridPane.add(btnSave, 2, 9);
+
+        btnSendMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID,"Nurse: "));
         
         Button goBackButton = new Button("Go Back");
         goBackButton.setOnAction(e -> mainApp.showMainMenu());
-        IntakegridPane.add(goBackButton, 1, 9);
+        IntakegridPane.add(goBackButton, 0, 9);
 		
 	}
 
@@ -323,13 +325,15 @@ public class NurseView{
         String Bloodpressure = TxBloodPressure.getText();
         String KnownAllergies = TxKnownAllergies.getText();
         String HealthConcern = TxHealthConcern.getText();
-        String tDate = TxDate.getText();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate today = LocalDate.now();
+        String formattedDate = dtf.format(today);
     
         String fileName = PATIENTID + "_PatientInfo.txt";
         StringBuilder fileContent = new StringBuilder();
 
         // Append the new content to the file
-        fileContent.append("\nVisit "+ tDate + "\n");
+        fileContent.append("\nVisit Date(YYYY/MM/DD) "+ formattedDate + "\n");
         //fileContent.append("Patient Vitals:\n");
         fileContent.append("Weight: ").append(Weight).append("\n");
         fileContent.append("Height: ").append(Height).append("\n");

@@ -154,18 +154,26 @@ public class PatientView {
         alert.showAndWait();
     }
 
+    
     private void loadMessageFromFile(String patientID, String message) {
         String fileName = patientID + "_Messages.txt";
         File file = new File(fileName);
-    
+
         try {
             if (!file.exists()) {
                 file.createNewFile(); // Create the file if it doesn't exist
+                // No existing messages to display
+            } else {
+                // Read and display existing messages from the file
+                readMessagesFromFile(file);
             }
-    
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true)); // Open the file in append mode
-            writer.write("Patient: " + message + "\n"); // Append the message to the file
+
+            // Append the new message to the file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+            writer.write("Patient: " + message + "\n");
             writer.close();
+
+            // Append the new message to the TextArea
             sendMessage(message);
         } catch (IOException e) {
             e.printStackTrace();
@@ -173,9 +181,27 @@ public class PatientView {
         }
     }
 
+    private void readMessagesFromFile(File file) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            StringBuilder existingMessages = new StringBuilder();
+
+            while ((line = reader.readLine()) != null) {
+                existingMessages.append(line).append("\n");
+            }
+
+            reader.close();
+            messageArea.setText(existingMessages.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            sendMessage("Failed to read messages from file!");
+        }
+    }
+
     private void sendMessage(String message) {
         if (!message.isEmpty()) {
-            messageArea.appendText(message + "\n");
+            messageArea.appendText("Patient: " + message + "\n");
             // Clear the input after sending
             messageInput.clear();
         }

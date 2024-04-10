@@ -101,7 +101,7 @@ public class DoctorView{
 		viewMessage.setPrefWidth(100);
 		viewMessage.setPrefHeight(50);
 		viewMessage.setOnAction(e -> sendPharmacy(medstext.getText()));
-		viewMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID));
+		viewMessage.setOnAction(e -> mainApp.sendMessage(PATIENTID,"Doctor: "));
 
 		
 		// Layout
@@ -181,10 +181,14 @@ public class DoctorView{
 		String immunizationsString = immunizationsText.getText();
 
         String fileName = patientID + "_Notes.txt";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate today = LocalDate.now();
+        String formattedDate = dtf.format(today);
         
         //if they are all filled, create the file
         try {
             FileWriter writer = new FileWriter(fileName, true);
+			writer.write("\nVisit Date(YYYY/MM/DD) " + formattedDate);
             writer.write("Notes: " + notesString + "\n");
 			writer.write("Medication: " + medsString + "\n");
 			writer.write("Immunization: " + immunizationsString + "\n");
@@ -193,9 +197,6 @@ public class DoctorView{
             e.printStackTrace();
         }
 	}
-
-
-
 
 	private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
