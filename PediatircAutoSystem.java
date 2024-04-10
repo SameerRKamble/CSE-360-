@@ -20,6 +20,29 @@ public class PediatircAutoSystem extends Application {
     private Label MainTitle;
     private Scene mainScene; 
     private Stage primaryStage;
+
+	private Button viewPastButton;
+    private Label LDoctorNotes;
+    private Label LPersonalInformation;
+
+    private TextArea TxDoctorNotes;
+    private TextArea TxPersonalInformation;
+
+	BorderPane borderPane;
+	VBox leftVBox;
+	ScrollPane personalInfoScrollPane;
+	VBox rightVBox;
+	ScrollPane doctorNotesScrollPane;
+	HBox centerHBox;
+	VBox bottomVBox;
+
+
+	Button goBackButton;
+
+
+
+	boolean patientExists = false;
+
     
 	// Scene and Stage
 	public void start(Stage primaryStage) {
@@ -82,32 +105,114 @@ public class PediatircAutoSystem extends Application {
 		stage.show();
     }
 
-	public void openHistory(boolean isHistory) 
-    {
-		if (isHistory) 
-		{
-			String filename = ""; // will decide later 
-			try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-				String line;
-				while ((line = reader.readLine()) != null) {
-					System.out.println(line); // Print the for now
-				}
-			} catch (IOException e) {
-				// Handle exceptions here
-				e.printStackTrace();
+	public void accessHistoryFile(String patientID) {
+		String ID = patientID;
+		String notes = "";
+		String pp = "";
+		
+		String notesFile = patientID + "_Notes.txt";
+		
+		//read from notes file
+		try (BufferedReader reader = new BufferedReader(new FileReader(notesFile))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				notes = notes + line + "\n";
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		else
-		{
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("No history found");
-            alert.showAndWait();
+		
+		
+		//read from patient file
+		try (BufferedReader reader = new BufferedReader(new FileReader(patientID + "_PatientInfo.txt"))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				pp = pp + line + "\n";
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-
+		
+		// Show the history UI
+		showHistoryUI(notes, pp);
 	}
+
+	private void showHistoryUI(String notes, String pp) {
+		LDoctorNotes = new Label("Doctor's notes:");
+		LPersonalInformation = new Label("Patient Information:");
+		TxDoctorNotes = new TextArea(notes);
+		TxPersonalInformation = new TextArea(pp);
+	
+		borderPane = new BorderPane();
+	
+		// Create left VBox
+		leftVBox = new VBox();
+		leftVBox.setPadding(new Insets(10));
+		leftVBox.setAlignment(Pos.CENTER_LEFT);
+		leftVBox.getChildren().add(LPersonalInformation);
+	
+		// Wrap the TextArea in a ScrollPane
+		personalInfoScrollPane = new ScrollPane(TxPersonalInformation);
+		personalInfoScrollPane.setFitToWidth(true);
+		personalInfoScrollPane.setFitToHeight(true);
+		personalInfoScrollPane.setPrefViewportHeight(200); // Set preferred height
+		leftVBox.getChildren().add(personalInfoScrollPane);
+	
+		// Create right VBox
+		rightVBox = new VBox();
+		rightVBox.setPadding(new Insets(10));
+		rightVBox.setAlignment(Pos.CENTER_RIGHT);
+		rightVBox.getChildren().add(LDoctorNotes);
+	
+		// Wrap the TextArea in a ScrollPane
+		doctorNotesScrollPane = new ScrollPane(TxDoctorNotes);
+		doctorNotesScrollPane.setFitToWidth(true);
+		doctorNotesScrollPane.setFitToHeight(true);
+		doctorNotesScrollPane.setPrefViewportHeight(200); // Set preferred height
+		rightVBox.getChildren().add(doctorNotesScrollPane);
+	
+		// Create a center HBox and add the left and right VBoxes to it
+		centerHBox = new HBox(leftVBox, rightVBox);
+		centerHBox.setAlignment(Pos.CENTER);
+	
+		// Set the center HBox in the BorderPane
+		borderPane.setCenter(centerHBox);
+	
+		// Create a VBox for the "Go Back" button
+		bottomVBox = new VBox();
+		bottomVBox.setAlignment(Pos.CENTER);
+		bottomVBox.setPadding(new Insets(10));
+	
+		goBackButton = new Button("Go Back");
+		borderPane.setBottom(bottomVBox);
+		goBackButton.setOnAction(e -> showMainMenu());
+	
+		bottomVBox.getChildren().add(goBackButton);
+	
+		// Show the scene
+		Scene historyScene = new Scene(borderPane, 800, 600);
+		primaryStage.setScene(historyScene);
+		primaryStage.show();
+	}
+	
+
+	public boolean existsPatientID(String searchString) {
+		patientExists = false; // Initialize patientExists to false
+		try (BufferedReader reader = new BufferedReader(new FileReader("IDs.txt"))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals(searchString)) {
+					patientExists = true; // Set patientExists to true if string is found
+					break; // Exit the loop once string is found
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace(); // Handle file reading exception
+		}
+		//System.out.println(patientExists); // Print the value of patientExists
+		return patientExists;
+	}
+	
     
     public void showMainMenu() {
     	primaryStage.setScene(mainScene); // Reuse the main scene

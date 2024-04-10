@@ -21,17 +21,40 @@ public class DoctorView{
     private Button viewHistory;
     private Button saveImmunizations;
 
+	private TextField patientIdInput;  // TextField for patient ID input
+    private Button submitButton;       // Button to submit patient ID
+    private Button btnRegister;
+    private VBox inputLayout; 
+    private VBox DoctorView;
+
+	private boolean isHistory = false;
+	String PATIENTID;
+
     //VBox mainLayout;
     BorderPane mainLayout;
-
-    boolean isHistory = false;
     
     //layout
     private PediatircAutoSystem mainApp;
     
     public DoctorView(PediatircAutoSystem mainApp) {
     	this.mainApp = mainApp;
+		initializeInputUI();
         initializeUI();
+    }
+
+	private void initializeInputUI() {
+        // Patient ID input section   
+        patientIdInput = new TextField();
+        patientIdInput.setPromptText("Enter Patient ID");
+        
+        //button part
+        submitButton = new Button("Load Patient Data");
+        submitButton.setOnAction(event -> loadPatientData(patientIdInput.getText()));
+
+        inputLayout = new VBox(20);
+        inputLayout.setAlignment(Pos.CENTER);
+        inputLayout.getChildren().addAll(new Label("Patient ID:"), patientIdInput, submitButton);
+        DoctorView = inputLayout;
     }
     
 
@@ -58,34 +81,21 @@ public class DoctorView{
 		save.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 		save.setPrefWidth(100);
 		save.setPrefHeight(50);
-		save.setOnAction(e -> doctorNotes(docNoteText.getText()));
+		save.setOnAction(e -> saveDoctorNotes(PATIENTID));
 
 		sendMeds = new Button("send meds");
 		sendMeds.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 		sendMeds.setPrefWidth(100);
 		sendMeds.setPrefHeight(50);
-		sendMeds.setOnAction(e -> doctorMedication(medstext.getText()));
-		
-		saveImmunizations = new Button("Save Immunizations");
-		saveImmunizations.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
-		saveImmunizations.setPrefWidth(150);
-		saveImmunizations.setPrefHeight(50);
-		saveImmunizations.setOnAction(e -> doctorImmunizations(immunizationsText.getText()));
+		//sendMeds.setOnAction(e -> doctorMedication(medstext.getText()));
 
 		viewHistory = new Button("View his");
 		viewHistory.setStyle("-fx-background-color: #4c6fb5; -fx-text-fill: #111112;");
 		viewHistory.setPrefWidth(100);
 		viewHistory.setPrefHeight(50);
 
-		if (!isHistory) {
-			viewHistory.setOnAction(e -> openHistory());
-		} else {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText(null);
-			alert.setContentText("No history found");
-			alert.showAndWait();
-		}
+		viewHistory.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
+
 		
 		// Layout
 		mainLayout = new BorderPane();
@@ -108,74 +118,66 @@ public class DoctorView{
 
 		Button goBackButton = new Button("Go Back");
 		goBackButton.setOnAction(e -> mainApp.showMainMenu());
-		bottomBox.getChildren().addAll(goBackButton, save, sendMeds, saveImmunizations, viewHistory);
+		bottomBox.getChildren().addAll(goBackButton, save, sendMeds, viewHistory);
 
 		mainLayout.setBottom(bottomBox);
 	}
- 
-
 
 	//get root for the main button to use
-    public BorderPane getRoot() {
-        return mainLayout;
+    public VBox getRoot() {
+        return DoctorView;
     }
-	
-	private void doctorNotes(String notes) {
 
-        String fileName ="Notes.txt";
+	private void loadPatientData(String patientID) {
+        
+        isHistory = mainApp.existsPatientID(patientID);
+        PATIENTID = patientID;
+
+        //if the id exists, then go to the mainlayout 
+        if (isHistory) 
+        {
+            DoctorView.getChildren().clear();
+            DoctorView.getChildren().add(mainLayout);  
+        }
+        else
+        {
+            showAlert("Patient ID not Found");
+        }
+ 	
+    }
+
+	private void saveDoctorNotes(String patientID) {
+
+		patientID = PATIENTID;
+		String notesString = docNoteText.getText();
+		String medsString = medstext.getText();
+		String immunizationsString = immunizationsText.getText();
+
+        String fileName = patientID + "_Notes.txt";
         
         //if they are all filled, create the file
         try {
             FileWriter writer = new FileWriter(fileName, true);
-            writer.write("Notes: " + notes + "\n");
-            //writer.write("medication: " + medication + "\n");
+            writer.write("Notes: " + notesString + "\n");
+			writer.write("Medication: " + medsString + "\n");
+			writer.write("Immunization: " + immunizationsString + "\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 	}
 
-    private void doctorMedication(String medication) {
 
-        String fileName ="Medication.txt";
-        
-        //if they are all filled, create the file
-        try {
-            FileWriter writer = new FileWriter(fileName, true);
-            writer.write("medication: " + medication + "\n");
-            //writer.write("medication: " + medication + "\n");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-	}
 
-    private void doctorImmunizations(String immunization) {
-    	String fileName = "Immunizations.txt";
-    	
-    	//if they are all filled, create the file
-        try {
-            FileWriter writer = new FileWriter(fileName, true);
-            writer.write("Immunization: " + immunization + "\n");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-	}
 
-    private void openHistory() 
-    {
-        String filename = ""; // will decide later 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line); // Print the for now
-            }
-        } catch (IOException e) {
-            // Handle exceptions here
-            e.printStackTrace();
-        }
+	private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
-	}
+
     
 }
