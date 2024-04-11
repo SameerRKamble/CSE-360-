@@ -335,8 +335,8 @@ public class NurseView{
             writer.write("Phone Number: " + phoneNumber + "\n");
             writer.write("Insurance ID: " + insuranceID + "\n");
             writer.write("Pharmacy: " + pharmacy + "\n");
-            writer.write("\t\t\t\t\t\t-------------------------------");
-            writer.write("\n\t\tVitals " + "\n");
+            writer.write("\t\t\t-------------------------------");
+            writer.write("\n\t\t\t\t\t  Vitals " + "\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -381,8 +381,16 @@ public class NurseView{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Clear the text fields
+        TxWeight.clear();
+        TxHeight.clear();
+        TxTemperature.clear();
+        TxBloodPressure.clear();
+        TxKnownAllergies.clear();
+        TxHealthConcern.clear();
     
-        mainApp.showMainMenu();
+        //mainApp.showMainMenu();
     }
     
 	

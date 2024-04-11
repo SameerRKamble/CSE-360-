@@ -216,6 +216,10 @@ public class DoctorView{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		docNoteText.clear();
+		medstext.clear();
+		immunizationsText.clear();
 	}
 	
 
