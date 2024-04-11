@@ -207,10 +207,11 @@ public class DoctorView{
 		//if they are all filled, create the file
 		try {
 			FileWriter writer = new FileWriter(fileName, true);
-			writer.write("Visit Date(YYYY/MM/DD HH:mm:ss) " + formattedDateTime + "\n");
+			writer.write("Visit Date(YYYY/MM/DD HH:mm:ss)  " + formattedDateTime + "\n");
 			writer.write("Notes: " + notesString + "\n");
 			writer.write("Medication: " + medsString + "\n");
 			writer.write("Immunization: " + immunizationsString + "\n");
+			writer.write("\t\t\t\t\t\t------\n\n");
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();

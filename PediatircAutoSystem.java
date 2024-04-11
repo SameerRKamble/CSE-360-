@@ -4,6 +4,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.*;
+import javafx.scene.text.*;
 import java.io.*;
 
 public class PediatircAutoSystem extends Application {
@@ -38,9 +39,6 @@ public class PediatircAutoSystem extends Application {
 
 
 	Button goBackButton;
-
-
-
 
 	boolean patientExists = false;
 
@@ -87,7 +85,7 @@ public class PediatircAutoSystem extends Application {
 	
 	private void openNurseView(Stage stage) {
 		NurseView NurseView = new NurseView(this);
-        Scene scene = new Scene(NurseView.getRoot(), 800, 650);
+        Scene scene = new Scene(NurseView.getRoot(), 900, 650);
         stage.setScene(scene);
 		stage.show();
     }
@@ -112,6 +110,20 @@ public class PediatircAutoSystem extends Application {
 		String pp = "";
 		
 		String notesFile = patientID + "_Notes.txt";
+		File file = new File(notesFile);
+
+		if (!file.exists()) {
+			showAlert("Patient " + patientID + " haven't been through the physical test");
+			try {
+
+				file.createNewFile(); // Create the file if it doesn't exist
+
+			} catch (IOException e) {
+				e.printStackTrace();
+
+			}
+		
+		}
 		
 		//read from notes file
 		try (BufferedReader reader = new BufferedReader(new FileReader(notesFile))) {
@@ -140,40 +152,46 @@ public class PediatircAutoSystem extends Application {
 
 	private void showHistoryUI(String notes, String pp) {
 		LDoctorNotes = new Label("Doctor's notes:");
+		LDoctorNotes.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
+		LDoctorNotes.setPadding(new Insets(10));
 		LPersonalInformation = new Label("Patient Information:");
+		LPersonalInformation.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
+		LPersonalInformation.setPadding(new Insets(10));
 		TxDoctorNotes = new TextArea(notes);
+		TxDoctorNotes.setFont(Font.font("Arial", 12));
+		TxDoctorNotes.setPrefHeight(600);
 		TxPersonalInformation = new TextArea(pp);
+		TxPersonalInformation.setFont(Font.font("Arial", 12));
+		TxPersonalInformation.setPrefHeight(600);
 	
 		borderPane = new BorderPane();
 	
 		// Create left VBox
 		leftVBox = new VBox();
 		leftVBox.setPadding(new Insets(10));
-		leftVBox.setAlignment(Pos.CENTER_LEFT);
-		leftVBox.getChildren().add(LPersonalInformation);
+		leftVBox.setAlignment(Pos.TOP_CENTER);
+		leftVBox.getChildren().addAll(LPersonalInformation, TxPersonalInformation);
 	
 		// Wrap the TextArea in a ScrollPane
-		personalInfoScrollPane = new ScrollPane(TxPersonalInformation);
+		personalInfoScrollPane = new ScrollPane(leftVBox);
 		personalInfoScrollPane.setFitToWidth(true);
 		personalInfoScrollPane.setFitToHeight(true);
-		personalInfoScrollPane.setPrefViewportHeight(200); // Set preferred height
-		leftVBox.getChildren().add(personalInfoScrollPane);
+		personalInfoScrollPane.setPrefViewportHeight(400); // Set preferred height
 	
 		// Create right VBox
 		rightVBox = new VBox();
 		rightVBox.setPadding(new Insets(10));
-		rightVBox.setAlignment(Pos.CENTER_RIGHT);
-		rightVBox.getChildren().add(LDoctorNotes);
+		rightVBox.setAlignment(Pos.TOP_CENTER);
+		rightVBox.getChildren().addAll(LDoctorNotes, TxDoctorNotes);
 	
 		// Wrap the TextArea in a ScrollPane
-		doctorNotesScrollPane = new ScrollPane(TxDoctorNotes);
+		doctorNotesScrollPane = new ScrollPane(rightVBox);
 		doctorNotesScrollPane.setFitToWidth(true);
 		doctorNotesScrollPane.setFitToHeight(true);
-		doctorNotesScrollPane.setPrefViewportHeight(200); // Set preferred height
-		rightVBox.getChildren().add(doctorNotesScrollPane);
+		doctorNotesScrollPane.setPrefViewportHeight(400); // Set preferred height
 	
 		// Create a center HBox and add the left and right VBoxes to it
-		centerHBox = new HBox(leftVBox, rightVBox);
+		centerHBox = new HBox(personalInfoScrollPane, doctorNotesScrollPane);
 		centerHBox.setAlignment(Pos.CENTER);
 	
 		// Set the center HBox in the BorderPane
@@ -195,6 +213,8 @@ public class PediatircAutoSystem extends Application {
 		primaryStage.setScene(historyScene);
 		primaryStage.show();
 	}
+	
+	
 	
 
 	public boolean existsPatientID(String searchString) {

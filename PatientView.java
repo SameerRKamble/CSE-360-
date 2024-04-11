@@ -5,7 +5,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.io.*;
 import javafx.geometry.*;
-import javafx.scene.text.Font;
+import javafx.scene.text.*;
 
 public class PatientView {
 
@@ -20,9 +20,10 @@ public class PatientView {
 
     private boolean isHistory = false;
 	String PATIENTID;
+    String fullName = "";
 
     private PediatircAutoSystem mainApp;
-    TextField messageInput;
+    TextArea messageInput;
     
     public PatientView(PediatircAutoSystem mainApp) {
     	this.mainApp = mainApp;
@@ -63,36 +64,55 @@ public class PatientView {
         root = new BorderPane();
         root.setPrefSize(400, 600);
 
+        Label titleLabel = new Label("Welcome to Patient Messaging System");
+        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        titleLabel.setPadding(new Insets(10));
+        titleLabel.setAlignment(Pos.CENTER);
+    
         messageArea = new TextArea();
         messageArea.setEditable(false);
         messageArea.setWrapText(true);
-
-        messageInput = new TextField();
+        messageArea.setPrefHeight(400);
+        messageArea.setPadding(new Insets(10));
+    
+        messageInput = new TextArea();
         messageInput.setPromptText("Type your message...");
-        
+        messageInput.setPrefRowCount(1); // Set initial row count
+        messageInput.setWrapText(true); // Enable text wrapping
+        messageInput.setPrefHeight(50); // Adjust height as needed
+
+        Button goBackButton = new Button("Go Back");
+        goBackButton.setOnAction(e -> mainApp.showMainMenu());
 
         Button sendMessageButton = new Button("Send");
         sendMessageButton.setOnAction(e -> loadMessageFromFile(PATIENTID, messageInput.getText()));
-
+    
         Button changeInfoButton = new Button("Change Info");
         changeInfoButton.setOnAction(e -> changeInfo(PATIENTID));
-
+    
         Button viewHistoryButton = new Button("View History");
         viewHistoryButton.setOnAction(e -> mainApp.accessHistoryFile(PATIENTID));
-
-        HBox messageBox = new HBox(10, messageInput, sendMessageButton);
-        messageBox.setStyle("-fx-background-color: #ccd6dd; -fx-padding: 10;");
-        messageBox.setSpacing(10); // Adjust spacing as needed
-        messageBox.setPrefHeight(50); // Adjust height as needed
-
-        VBox buttonBar = new VBox(10, changeInfoButton, viewHistoryButton);
-        buttonBar.setStyle("-fx-background-color: #ccd6dd; -fx-padding: 10;");
-        buttonBar.setSpacing(10); // Adjust spacing as needed
-
-        root.setCenter(messageArea);
-        root.setBottom(messageBox);
+    
+        HBox messageBox = new HBox(10, sendMessageButton, messageInput);
+        messageBox.setAlignment(Pos.CENTER);
+        messageBox.setPadding(new Insets(10));
+        messageBox.setStyle("-fx-background-color: #f0f0f0; -fx-border-width: 1; -fx-border-color: #a0a0a0;");
+        messageBox.setSpacing(10);
+    
+        VBox buttonBar = new VBox(10, changeInfoButton, viewHistoryButton, goBackButton);
+        buttonBar.setAlignment(Pos.CENTER);
+        buttonBar.setPadding(new Insets(10));
+        //buttonBar.setStyle("-fx-background-color: #f0f0f0; -fx-border-width: 1; -fx-border-color: #a0a0a0;");
+        buttonBar.setSpacing(10);
+    
+        VBox contentBox = new VBox(titleLabel, messageArea, messageBox);
+        contentBox.setSpacing(10);
+        contentBox.setPadding(new Insets(10));
+    
+        root.setCenter(contentBox);
         root.setRight(buttonBar);
     }
+    
 
     private void changeInfo(String patientID) {
         try (BufferedReader reader = new BufferedReader(new FileReader(patientID + "_PatientInfo.txt"))) {
@@ -144,6 +164,7 @@ public class PatientView {
         
         isHistory = mainApp.existsPatientID(patientID);
         PATIENTID = patientID;
+        
 
         //if the id exists, then go to the mainlayout 
         if (isHistory) 

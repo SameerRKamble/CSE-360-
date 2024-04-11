@@ -335,7 +335,8 @@ public class NurseView{
             writer.write("Phone Number: " + phoneNumber + "\n");
             writer.write("Insurance ID: " + insuranceID + "\n");
             writer.write("Pharmacy: " + pharmacy + "\n");
-            writer.write("\nVitals " + "\n");
+            writer.write("\t\t\t\t\t\t-------------------------------");
+            writer.write("\n\t\tVitals " + "\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -364,7 +365,7 @@ public class NurseView{
         StringBuilder fileContent = new StringBuilder();
 
         // Append the new content to the file
-        fileContent.append("\nVisit Date(YYYY/MM/DD HH:mm:ss) "+ formattedDateTime + "\n");
+        fileContent.append("\nVisit Date(YYYY/MM/DD HH:mm:ss)  "+ formattedDateTime + "\n");
         //fileContent.append("Patient Vitals:\n");
         fileContent.append("Weight: ").append(Weight).append("\n");
         fileContent.append("Height: ").append(Height).append("\n");
@@ -372,7 +373,7 @@ public class NurseView{
         fileContent.append("Blood Pressure: ").append(Bloodpressure).append("\n");
         fileContent.append("Known Allergies: ").append(KnownAllergies).append("\n");
         fileContent.append("Health Concern: ").append(HealthConcern).append("\n");
-        
+        fileContent.append("\n\t\t\t\t\t\t------\n");
     
         // Write the file content back to the file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
