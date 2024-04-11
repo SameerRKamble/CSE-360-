@@ -1,4 +1,4 @@
-CSE 360 Project by Yun Huang, Paul Huber, Divyansh Singh, Gavin Li, and Sameer Kamble
+#CSE 360 Project by Yun Huang, Paul Huber, Divyansh Singh, Gavin Li, and Sameer Kamble
 
 This is a back-end system for a pediatric office. It is designed to be used by doctors, nurses, and patients. 
 
